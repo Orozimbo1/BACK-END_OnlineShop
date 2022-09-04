@@ -1,4 +1,3 @@
-from ast import arguments
 from flask_restful import Resource, reqparse
 
 usuarios = [
@@ -87,4 +86,6 @@ class Usuario(Resource):
         return novo_usuario, 201
 
     def delete(self, usuario_id):
-        pass
+        global usuarios
+        usuarios = [usuario for usuario in usuarios if usuario['usuario_id'] != usuario_id]
+        return {"mensagem":"Usuário deletado com sucesso"}, 200
