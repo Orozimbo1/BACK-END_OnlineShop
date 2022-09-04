@@ -6,15 +6,16 @@ class UsuarioModel(banco.Model):
     usuario_id = banco.Column(banco.Integer, primary_key=True)
     nome = banco.Column(banco.String(80))
     sobrenome = banco.Column(banco.String(80))
-    email = banco.Column(banco.String(100))
-    senha = banco.Column(banco.String(80))
+    email = banco.Column(banco.String(40))
+    senha = banco.Column(banco.String(40))
     telefone = banco.Column(banco.String(20))
     CPF = banco.Column(banco.String(13))
     CEP = banco.Column(banco.String(10))
-    cidade = banco.Column(banco.String(40))
-    logradouro = banco.Column(banco.String(40))
+    cidade = banco.Column(banco.String(80))
+    logradouro = banco.Column(banco.String(80))
     rua = banco.Column(banco.String(80))
     numero = banco.Column(banco.Integer)
+    
 
     def __init__(self, usuario_id, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
         self.usuario_id = usuario_id
@@ -45,3 +46,33 @@ class UsuarioModel(banco.Model):
             'rua': self.rua,
             'numero': self.numero
         }
+
+    @classmethod
+    def buscar_usuario(cls, usuario_id):
+        usuario = cls.query.filter_by(usuario_id=usuario_id).first()
+
+        if usuario:
+            return usuario
+        return None
+
+    def salvar_usuario(self):
+
+        banco.session.add(self)
+        banco.session.commit()
+
+    def atualizar_usuario(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
+        self.nome = nome
+        self.sobrenome = sobrenome
+        self.email = email
+        self.senha = senha
+        self.telefone = telefone
+        self.CPF = CPF
+        self.CEP = CEP
+        self.cidade = cidade
+        self.logradouro = logradouro
+        self.rua = rua
+        self.numero = numero
+
+    def deletar_usuario(self):
+        banco.session.delete(self)
+        banco.session.commit()

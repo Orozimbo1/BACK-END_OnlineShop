@@ -1,41 +1,11 @@
 from flask_restful import Resource, reqparse
-from models.usuario import UsuarioModel
 
-usuarios = [
-    {
-        'usuario_id': 1,
-        'nome': 'Matheus',
-        'sobrenome': 'Orozimbo',
-        'email': 'matheus@matheus.com',
-        'senha': '123456789',
-        'telefone': '123',
-        'CPF': 'uiujkljkj',
-        'CEP': '1235567',
-        'Cidade': 'jhjhjhf',
-        'logradouro': 'jhaajH',
-        'rua': 'sjhajhfahf',
-        'numero': 12
-    },
-    {
-        'usuario_id': 2,
-        'nome': 'Matheus',
-        'sobrenome': 'Orozimbo',
-        'email': 'matheus@matheus.com',
-        'senha': '123456789',
-        'telefone': '123',
-        'CPF': 'uiujkljkj',
-        'CEP': '1235567',
-        'cidade': 'jhjhjhf',
-        'logradouro': 'jhaajH',
-        'rua': 'sjhajhfahf',
-        'numero': 12
-    },
-]
+from models.usuario import UsuarioModel
 
 class Usuarios(Resource):
 
     def get(self):
-        return {'usuarios': usuarios}
+        return UsuarioModel(usuarios)
 
 class Usuario(Resource):
 
@@ -52,43 +22,42 @@ class Usuario(Resource):
     argumentos.add_argument('rua')
     argumentos.add_argument('numero')
 
-    def buscar_usuario(usuario_id):
-        for usuario in usuarios:
-            if usuario['usuario_id'] == usuario_id:
-                return usuario
-        return None
-
     def get(self, usuario_id):
         
-        usuario = Usuario.buscar_usuario(usuario_id)
+        usuario = UsuarioModel.buscar_usuario(usuario_id)
         if usuario:
-            return usuario
+            return usuario.json()
         return {'mensagem': 'Usuário  não encontrado.'}, 404
 
     def post(self, usuario_id):
 
+        if UsuarioModel.buscar_usuario(usuario_id):
+            return {"mensagem": "Usuário já cadastrado"}, 404
+
         dados = Usuario.argumentos.parse_args()
         usuario = UsuarioModel(usuario_id, **dados)
-        novo_usuario = usuario.json()
+        usuario.salvar_usuario()
 
-        usuarios.append(novo_usuario)
-        return novo_usuario, 201
+        return usuario.json(), 201
 
     def put(self, usuario_id):
         
         dados = Usuario.argumentos.parse_args()
+
+        usuario_encontrado = UsuarioModel.buscar_usuario(usuario_id)
+        if usuario_encontrado:
+            usuario_encontrado.atualizar_usuario(**dados)
+            usuario_encontrado.salvar_usuario()
+            return usuario_encontrado.json(), 200
+
         usuario = UsuarioModel(usuario_id, **dados)
-        novo_usuario = usuario.json()
-
-        usuario = Usuario.buscar_usuario(usuario_id)
-        if usuario:
-            usuario.update(novo_usuario)
-            return novo_usuario, 200
-
-        usuarios.append(novo_usuario)
-        return novo_usuario, 201
+        usuario.salvar_usuario()
+        return usuario.json(), 201
 
     def delete(self, usuario_id):
-        global usuarios
-        usuarios = [usuario for usuario in usuarios if usuario['usuario_id'] != usuario_id]
-        return {"mensagem":"Usuário deletado com sucesso"}, 200
+        usuario = UsuarioModel.buscar_usuario(usuario_id)
+
+        if usuario:
+            usuario.deletar_usuario()
+            return {"mensagem":"Usuário deletado com sucesso"}, 200
+        return {'mensagem': 'Usuário não encontrado.'}, 404
