@@ -1,8 +1,7 @@
-from importlib.resources import Resource
 from flask import Flask
 from flask_restful import Api
 from resources.usuario import Usuario, Usuarios
-from resources.produtos import Produtos, Produto
+from resources.produto import Produtos, Produto
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
