@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from models.usuario import UsuarioModel
 
 usuarios = [
     {
@@ -13,7 +14,7 @@ usuarios = [
         'Cidade': 'jhjhjhf',
         'logradouro': 'jhaajH',
         'rua': 'sjhajhfahf',
-        'número': 12
+        'numero': 12
     },
     {
         'usuario_id': 2,
@@ -27,7 +28,7 @@ usuarios = [
         'cidade': 'jhjhjhf',
         'logradouro': 'jhaajH',
         'rua': 'sjhajhfahf',
-        'número': 12
+        'numero': 12
     },
 ]
 
@@ -67,7 +68,8 @@ class Usuario(Resource):
     def post(self, usuario_id):
 
         dados = Usuario.argumentos.parse_args()
-        novo_usuario = { 'usuario_id': usuario_id, **dados }
+        usuario = UsuarioModel(usuario_id, **dados)
+        novo_usuario = usuario.json()
 
         usuarios.append(novo_usuario)
         return novo_usuario, 201
@@ -75,7 +77,8 @@ class Usuario(Resource):
     def put(self, usuario_id):
         
         dados = Usuario.argumentos.parse_args()
-        novo_usuario = { 'usuario_id': usuario_id, **dados }
+        usuario = UsuarioModel(usuario_id, **dados)
+        novo_usuario = usuario.json()
 
         usuario = Usuario.buscar_usuario(usuario_id)
         if usuario:
