@@ -15,7 +15,8 @@ class LojaModel(banco.Model):
     rua = banco.Column(banco.String(80))
     numero = banco.Column(banco.Integer)
 
-    def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
+    def __init__(self,  loja_id, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
+        self.loja_id = loja_id
         self.nome_fantasia = nome_fantasia
         self.email = email
         self.senha = senha
