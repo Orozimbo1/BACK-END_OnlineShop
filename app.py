@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 from resources.usuario import Usuario, Usuarios
 from resources.produto import Produtos, Produto
-from resources.loja import Lojas, Loja
+from resources.loja import Lojas, Loja, LojaCadastro
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
@@ -40,6 +40,7 @@ api.add_resource(Produtos, '/produtos')
 api.add_resource(Produto, '/produto/<int:produto_id>')
 api.add_resource(Lojas, '/lojas')
 api.add_resource(Loja, '/loja/<string:loja_id>')
+api.add_resource(LojaCadastro, '/loja/cadastrar-loja/<string:loja_id>')
 
 
 if __name__ == '__main__':

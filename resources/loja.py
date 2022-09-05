@@ -28,19 +28,6 @@ class Loja(Resource):
             return loja.json()
         return {'mensagem': 'Loja não encontrada.'}, 404
 
-    def post(self, loja_id):
-
-        if LojaModel.buscar_lojas(loja_id):
-            return {"mensagem":"Produto '{}' já existente !".format(loja_id)}, 404
-
-        dados = Loja.argumentos.parse_args()
-        loja = LojaModel(loja_id, **dados)
-        try:
-            loja.salvar_loja()
-        except:
-            return {"mensagem":"Ocorreu um erro interno"}, 500
-        return loja.json()
-
     def put(self, loja_id):
         
         dados = Loja.argumentos.parse_args()
@@ -67,3 +54,18 @@ class Loja(Resource):
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return{"mensagem": "Loja deletada com sucesso"}
         return{"mensagem":"Loja não encontrada"}
+
+class LojaCadastro(Resource):
+
+    def post(self, loja_id):
+
+        if LojaModel.buscar_lojas(loja_id):
+            return {"mensagem":"Loja '{}' já existente !".format(loja_id)}, 404
+
+        dados = Loja.argumentos.parse_args()
+        loja = LojaModel(loja_id, **dados)
+        try:
+            loja.salvar_loja()
+        except:
+            return {"mensagem":"Ocorreu um erro interno"}, 500
+        return loja.json()
