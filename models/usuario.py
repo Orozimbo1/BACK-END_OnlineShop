@@ -17,8 +17,7 @@ class UsuarioModel(banco.Model):
     numero = banco.Column(banco.Integer)
     
 
-    def __init__(self, usuario_id, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
-        self.usuario_id = usuario_id
+    def __init__(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
@@ -37,7 +36,6 @@ class UsuarioModel(banco.Model):
             'nome': self.nome,
             'sobrenome': self.sobrenome,
             'email': self.email,
-            'senha': self.senha,
             'telefone': self.telefone,
             'CPF': self.CPF,
             'CEP': self.CEP,
@@ -46,10 +44,25 @@ class UsuarioModel(banco.Model):
             'rua': self.rua,
             'numero': self.numero
         }
+    
+    def jsonLogin(self):
+        return {
+            'usuario_id': self.usuario_id,
+            'email': self.email
+        }
+
 
     @classmethod
     def buscar_usuario(cls, usuario_id):
         usuario = cls.query.filter_by(usuario_id=usuario_id).first()
+
+        if usuario:
+            return usuario
+        return None
+    
+    @classmethod
+    def buscar_email_usuario(cls, email):
+        usuario = cls.query.filter_by(email=email).first()
 
         if usuario:
             return usuario
