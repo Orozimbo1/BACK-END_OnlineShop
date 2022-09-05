@@ -5,21 +5,21 @@ from models.produto import ProdutoModel
 class Produtos(Resource):
 
     def get(self):
-        return ProdutoModel(produtos)
+        return {"produtos": [produto.json() for produto in ProdutoModel.query.all()]}
 
 class Produto(Resource):
 
     argumentos = reqparse.RequestParser()
-    argumentos.add_argument('genero')
-    argumentos.add_argument('secao')
-    argumentos.add_argument('categoria')
-    argumentos.add_argument('estilo')
-    argumentos.add_argument('nome')
-    argumentos.add_argument('descricao')
-    argumentos.add_argument('qtd_estoque')
-    argumentos.add_argument('cor')
-    argumentos.add_argument('tamanho')
-    argumentos.add_argument('preco')
+    argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido")
+    argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido")
+    argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido")
+    argumentos.add_argument('estilo', type=str,required= True, help= " O campo 'Estilo' precisa ser preenchido")
+    argumentos.add_argument('nome', type=str,required= True, help= " O campo 'Nome' precisa ser preenchido")
+    argumentos.add_argument('descricao', type=str,)
+    argumentos.add_argument('qtd_estoque', type=int,required= True, help= " O campo 'Quantidade em estoque' precisa ser preenchido")
+    argumentos.add_argument('cor', type=str,required= True, help= " O campo 'Cor' precisa ser preenchido")
+    argumentos.add_argument('tamanho', type=str,required= True, help= " O campo 'Tamanho' precisa ser preenchido")
+    argumentos.add_argument('preco', type=float,required= True, help= " O campo 'Preço' precisa ser preenchido")
 
     def get(self, produto_id):
         
@@ -31,11 +31,14 @@ class Produto(Resource):
     def post(self, produto_id):
 
         if ProdutoModel.buscar_produtos(produto_id):
-            return {"mensagem":"Produto com o id'{}'  já existe!"}, 404
+            return {"mensagem":"Produto '{}' já existente !".format(produto_id)}, 404
 
         dados = Produto.argumentos.parse_args()
         produto = ProdutoModel(produto_id, **dados)
-        produto.salvar_produto()
+        try:
+            produto.salvar_produto()
+        except:
+            return {"mensagem":"Ocorreu um erro interno"}, 500
         return produto.json()
 
     def put(self, produto_id):
@@ -47,14 +50,22 @@ class Produto(Resource):
             produto_encontrado.atualizar_produto(**dados)
             produto_encontrado.salvar_produto()
             return produto_encontrado.json(), 200
-        produto = { 'produto_id': produto_id, **dados }
 
-        produto.salvar_produto()
+        produto = ProdutoModel( produto_id, **dados )
+
+        try:
+            # return {"Mensagem":"Aoba"}
+            produto.salvar_produto()
+        except:
+            return {"Ocorreu um erro interno"}, 500
         return produto.json(), 201
 
     def delete(self, produto_id):
         produto = ProdutoModel.buscar_produtos(produto_id)
         if produto:
-            produto.deletar_produto()
-            return {"mensagem":"Produto deletado com sucesso"}, 200
+            try:
+                produto.deletar_produto()
+            except:
+                return {"mensagem":"Ocorreu um erro interno"}, 500
+            return{"mensagem": "Produto deletado com sucesso"}
         return{"mensagem":"Produto não encontrado"}
