@@ -21,9 +21,9 @@ class Loja(Resource):
     argumentos.add_argument('rua', type=str,required= True, help= " O campo 'Rua' precisa ser preenchido")
     argumentos.add_argument('numero', type=int,required= True, help= " O campo 'Número' precisa ser preenchido")
 
-    def get(self, loja_id):
+    def get(self, nome_fantasia):
         
-        loja = LojaModel.buscar_lojas(loja_id)
+        loja = LojaModel.buscar_lojas(nome_fantasia)
         if loja:
             return loja.json()
         return {'mensagem': 'Loja não encontrada.'}, 404

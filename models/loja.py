@@ -43,8 +43,8 @@ class LojaModel(banco.Model):
             'numero': self.numero
         }
     @classmethod
-    def buscar_lojas(cls, loja_id):
-        loja = cls.query.filter_by(loja_id=loja_id).first()
+    def buscar_lojas(cls, nome_fantasia):
+        loja = cls.query.filter_by(nome_fantasia=nome_fantasia).first()
 
         if loja:
             return loja
