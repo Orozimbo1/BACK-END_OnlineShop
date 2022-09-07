@@ -39,8 +39,8 @@ api.add_resource(UsuarioLogout, '/logout')
 api.add_resource(Produtos, '/produtos')
 api.add_resource(Produto, '/produto/<int:produto_id>')
 api.add_resource(Lojas, '/lojas')
-api.add_resource(Loja, '/loja/<string:loja_id>')
-api.add_resource(LojaCadastro, '/loja/cadastrar-loja/<string:loja_id>')
+api.add_resource(Loja, '/loja/<string:nome_fantasia>')
+api.add_resource(LojaCadastro, '/loja/cadastrar-loja')
 
 
 if __name__ == '__main__':

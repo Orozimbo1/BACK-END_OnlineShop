@@ -57,13 +57,14 @@ class Loja(Resource):
 
 class LojaCadastro(Resource):
 
-    def post(self, loja_id):
-
-        if LojaModel.buscar_lojas(loja_id):
-            return {"mensagem":"Loja '{}' já existente !".format(loja_id)}, 404
+    def post(self):
 
         dados = Loja.argumentos.parse_args()
-        loja = LojaModel(loja_id, **dados)
+
+        if LojaModel.buscar_lojas(dados['nome_fantasia']):
+            return {"mensagem":"Loja '{}' já existente !".format(dados['nome_fantasia'])}, 404
+
+        loja = LojaModel(**dados)
         try:
             loja.salvar_loja()
         except:
