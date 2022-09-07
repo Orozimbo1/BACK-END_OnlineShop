@@ -29,7 +29,7 @@ class Loja(Resource):
 
     def put(self, nome_fantasia):
         
-        dados = Loja.argumentos.parse_args()
+        dados = argumentos.parse_args()
 
         loja_encontrada = LojaModel.buscar_lojas(nome_fantasia)
         if loja_encontrada:
