@@ -3,7 +3,7 @@ from sql_alquemy import banco
 class LojaModel(banco.Model):
     __tablename__ = 'lojas'
 
-    loja_id = banco.Column(banco.String, primary_key=True)
+    loja_id = banco.Column(banco.Integer, primary_key=True)
     nome_fantasia = banco.Column(banco.String(40))
     email = banco.Column (banco.String(100))
     senha = banco.Column(banco.String(40))
@@ -15,8 +15,7 @@ class LojaModel(banco.Model):
     rua = banco.Column(banco.String(80))
     numero = banco.Column(banco.Integer)
 
-    def __init__(self,  loja_id, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
-        self.loja_id = loja_id
+    def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
         self.nome_fantasia = nome_fantasia
         self.email = email
         self.senha = senha
