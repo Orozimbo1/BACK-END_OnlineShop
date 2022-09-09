@@ -1,6 +1,8 @@
 from flask_restful import Resource, reqparse
 from models.loja import LojaModel
 
+
+
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('nome_fantasia', type=str, required=True, help= " O campo 'Nome Fantasia' precisa ser preenchido")
 argumentos.add_argument('email', type=str, required=True, help= "O campo 'e-mail' precisa ser preenchido")

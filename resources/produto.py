@@ -1,11 +1,91 @@
+from multiprocessing import connection
+from sqlite3 import connect
+import sqlite3
 from flask_restful import Resource, reqparse
 from models.produto import ProdutoModel
+import sqlite3
+
+def normalizar_path_params(genero=None,
+                            secao=None,
+                            categoria=None,
+                            estilo=None,
+                            cor=None,
+                            tamanho=None,
+                            preco_min= 0,
+                            preco_max = 20000,
+                            limit = 50,
+                            offset = 0, **dados):
+    if genero:
+        return{ genero: genero,
+                secao: secao,
+                categoria: categoria,
+                estilo: estilo,
+                cor: cor,
+                tamanho: tamanho,
+                preco_min: preco_min,
+                preco_max: preco_max,
+                limit: limit,
+                offset: offset}
+
+    return  {   secao: secao,
+                categoria: categoria,
+                estilo: estilo,
+                cor: cor,
+                tamanho: tamanho,
+                preco_min: preco_min,
+                preco_max: preco_max,
+                limit: limit,
+                offset: offset}
+
+path_params = reqparse.RequestParser()
+path_params.add_argument('genero', type=str)
+path_params.add_argument('secao', type=str)
+path_params.add_argument('categoria', type=str)
+path_params.add_argument('estilo', type=str)
+path_params.add_argument('nome', type=str)
+path_params.add_argument('cor', type=str)
+path_params.add_argument('tamanho', type=str)
+path_params.add_argument('preco_min', type=float)
+path_params.add_argument('preco_max', type=float)
+path_params.add_argument('limit', type=float)
+path_params.add_argument('offset', type=float)
+
 
 
 class Produtos(Resource):
 
     def get(self):
-        return {"produtos": [produto.json() for produto in ProdutoModel.query.all()]}
+        connection = sqlite3.connect('banco.db')
+        cursor = connection.cursor()
+
+        dados = path_params.parse_args()
+        dados_validos = {chave:dados[chave] for chave in dados if dados[chave] is not None}
+        parametros = normalizar_path_params(**dados_validos)
+        
+        if not parametros.get('genero'):
+            consulta = "SELECT * FROM produtos WHERE (preco > ? and preco < ?) LIMIT ? OFFSET ?"
+            tupla = tupla([parametros[chave] for chave in parametros])
+            resultado = cursor.execute(consulta, tupla)
+        else:
+            consulta = "SELECT * FROM produtos WHERE genero =? and (preco > ? and preco < ?) LIMIT ? OFFSET ?"
+            tupla = tupla([parametros[chave] for chave in parametros])
+            resultado = cursor.execute(consulta, tupla)
+        
+        produtos = []
+        for linha in resultado:
+            produtos.append({
+                    "genero" : linha[0],
+                    "secao" : linha [1],
+                    "categoria" : linha[2],
+                    "estilo" : linha[3],
+                    "nome": linha[4],
+                    "descricao" :linha[5],
+                    "cor" : linha[6],
+                    "tamanho" : linha[7],
+                    "preco" : linha[8]
+                    })
+
+        return {"produtos": produtos}
 
 class Produto(Resource):
 
