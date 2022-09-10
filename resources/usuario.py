@@ -34,7 +34,7 @@ class Usuario(Resource):
             return usuario.json()
         return {'mensagem': 'Usuário  não encontrado.'}, 404
 
-    @jwt_required()
+    # @jwt_required()
     def put(self, usuario_id):
         
         dados = argumentos.parse_args()
@@ -52,7 +52,7 @@ class Usuario(Resource):
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
         return usuario.json(), 201
 
-    @jwt_required()
+    # @jwt_required()
     def delete(self, usuario_id):
         usuario = UsuarioModel.buscar_usuario(usuario_id)
 
@@ -98,7 +98,7 @@ class UsuarioLogin(Resource):
 
 class UsuarioLogout(Resource):
     
-    @jwt_required()
+    # @jwt_required()
     def post(self):
         jwt_id = get_jwt()['jti']
         BLACKLIST.add(jwt_id)

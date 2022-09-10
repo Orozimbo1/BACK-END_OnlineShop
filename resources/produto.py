@@ -1,11 +1,20 @@
-from multiprocessing import connection
-from sqlite3 import connect
-import sqlite3
 from flask_restful import Resource, reqparse
 from models.produto import ProdutoModel
 import sqlite3
 
-def normalizar_path_params(genero=None,
+argumentos = reqparse.RequestParser()
+argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido")
+argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido")
+argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido")
+argumentos.add_argument('estilo', type=str,required= True, help= " O campo 'Estilo' precisa ser preenchido")
+argumentos.add_argument('nome', type=str,required= True, help= " O campo 'Nome' precisa ser preenchido")
+argumentos.add_argument('descricao', type=str,)
+argumentos.add_argument('qtd_estoque', type=int,required= True, help= " O campo 'Quantidade em estoque' precisa ser preenchido")
+argumentos.add_argument('cor', type=str,required= True, help= " O campo 'Cor' precisa ser preenchido")
+argumentos.add_argument('tamanho', type=str,required= True, help= " O campo 'Tamanho' precisa ser preenchido")
+argumentos.add_argument('preco', type=float,required= True, help= " O campo 'Preço' precisa ser preenchido")
+
+def normalizar_caminho_parametros(genero=None,
                             secao=None,
                             categoria=None,
                             estilo=None,
@@ -13,7 +22,7 @@ def normalizar_path_params(genero=None,
                             tamanho=None,
                             preco_min= 0,
                             preco_max = 20000,
-                            limit = 50,
+                            limit = 10,
                             offset = 0, **dados):
     if genero:
         return{ genero: genero,
@@ -37,18 +46,18 @@ def normalizar_path_params(genero=None,
                 limit: limit,
                 offset: offset}
 
-path_params = reqparse.RequestParser()
-path_params.add_argument('genero', type=str)
-path_params.add_argument('secao', type=str)
-path_params.add_argument('categoria', type=str)
-path_params.add_argument('estilo', type=str)
-path_params.add_argument('nome', type=str)
-path_params.add_argument('cor', type=str)
-path_params.add_argument('tamanho', type=str)
-path_params.add_argument('preco_min', type=float)
-path_params.add_argument('preco_max', type=float)
-path_params.add_argument('limit', type=float)
-path_params.add_argument('offset', type=float)
+caminho_parametros = reqparse.RequestParser()
+caminho_parametros.add_argument('genero', type=str)
+caminho_parametros.add_argument('secao', type=str)
+caminho_parametros.add_argument('categoria', type=str)
+caminho_parametros.add_argument('estilo', type=str)
+caminho_parametros.add_argument('nome', type=str)
+caminho_parametros.add_argument('cor', type=str)
+caminho_parametros.add_argument('tamanho', type=str)
+caminho_parametros.add_argument('preco_min', type=float)
+caminho_parametros.add_argument('preco_max', type=float)
+caminho_parametros.add_argument('limit', type=float)
+caminho_parametros.add_argument('offset', type=float)
 
 
 
@@ -58,17 +67,17 @@ class Produtos(Resource):
         connection = sqlite3.connect('banco.db')
         cursor = connection.cursor()
 
-        dados = path_params.parse_args()
+        dados = caminho_parametros.parse_args()
         dados_validos = {chave:dados[chave] for chave in dados if dados[chave] is not None}
-        parametros = normalizar_path_params(**dados_validos)
+        parametros = normalizar_caminho_parametros(**dados_validos)
         
         if not parametros.get('genero'):
-            consulta = "SELECT * FROM produtos WHERE (preco > ? and preco < ?) LIMIT ? OFFSET ?"
-            tupla = tupla([parametros[chave] for chave in parametros])
+            consulta = "SELECT * FROM produtos WHERE secao = ? and categoria = ? and estilo = ? and nome = ? and cor = ? and tamanho = ? and (preco >= ? and preco <= ?) LIMIT ? OFFSET ?"
+            tupla = tuple([parametros[chave] for chave in parametros])
             resultado = cursor.execute(consulta, tupla)
         else:
-            consulta = "SELECT * FROM produtos WHERE genero =? and (preco > ? and preco < ?) LIMIT ? OFFSET ?"
-            tupla = tupla([parametros[chave] for chave in parametros])
+            consulta = "SELECT * FROM produtos WHERE genero = ? and secao = ? and categoria = ? and estilo = ? and nome = ? and cor = ? and tamanho = ? and (preco > ? and preco < ?) LIMIT ? OFFSET ?"
+            tupla = tuple([parametros[chave] for chave in parametros])
             resultado = cursor.execute(consulta, tupla)
         
         produtos = []
@@ -89,18 +98,6 @@ class Produtos(Resource):
 
 class Produto(Resource):
 
-    argumentos = reqparse.RequestParser()
-    argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido")
-    argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido")
-    argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido")
-    argumentos.add_argument('estilo', type=str,required= True, help= " O campo 'Estilo' precisa ser preenchido")
-    argumentos.add_argument('nome', type=str,required= True, help= " O campo 'Nome' precisa ser preenchido")
-    argumentos.add_argument('descricao', type=str,)
-    argumentos.add_argument('qtd_estoque', type=int,required= True, help= " O campo 'Quantidade em estoque' precisa ser preenchido")
-    argumentos.add_argument('cor', type=str,required= True, help= " O campo 'Cor' precisa ser preenchido")
-    argumentos.add_argument('tamanho', type=str,required= True, help= " O campo 'Tamanho' precisa ser preenchido")
-    argumentos.add_argument('preco', type=float,required= True, help= " O campo 'Preço' precisa ser preenchido")
-
     def get(self, produto_id):
         
         produto = ProdutoModel.buscar_produtos(produto_id)
@@ -108,22 +105,9 @@ class Produto(Resource):
             return produto.json()
         return {'mensagem': 'Produto não encontrado.'}, 404
 
-    def post(self, produto_id):
-
-        if ProdutoModel.buscar_produtos(produto_id):
-            return {"mensagem":"Produto '{}' já existente !".format(produto_id)}, 404
-
-        dados = Produto.argumentos.parse_args()
-        produto = ProdutoModel(produto_id, **dados)
-        try:
-            produto.salvar_produto()
-        except:
-            return {"mensagem":"Ocorreu um erro interno"}, 500
-        return produto.json()
-
     def put(self, produto_id):
         
-        dados = Produto.argumentos.parse_args()
+        dados = argumentos.parse_args()
 
         produto_encontrado = ProdutoModel.buscar_produtos(produto_id)
         if produto_encontrado:
@@ -149,3 +133,15 @@ class Produto(Resource):
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return{"mensagem": "Produto deletado com sucesso"}
         return{"mensagem":"Produto não encontrado"}
+
+class ProdutoCadastro(Resource):
+
+    def post(self):
+
+        dados = argumentos.parse_args()
+        produto = ProdutoModel(**dados)
+        try:
+            produto.salvar_produto()
+        except:
+            return {"mensagem":"Ocorreu um erro interno"}, 500
+        return produto.json()

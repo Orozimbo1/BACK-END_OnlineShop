@@ -15,8 +15,7 @@ class ProdutoModel(banco.Model):
     tamanho = banco.Column(banco.String(10))
     preco = banco.Column(banco.Float(precision=2))
 
-    def __init__(self, produto_id, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
-        self.produto_id = produto_id
+    def __init__(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
         self.genero = genero
         self.secao = secao
         self.categoria = categoria
