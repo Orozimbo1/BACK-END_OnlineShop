@@ -3,6 +3,7 @@ from sql_alquemy import banco
 class ProdutoModel(banco.Model):
     __tablename__ = 'produtos'
 
+    loja = banco.Column(banco.String, banco.ForeignKey('lojas.nome_fantasia'))
     produto_id = banco.Column(banco.Integer, primary_key=True)
     genero = banco.Column(banco.String(80))
     secao = banco.Column(banco.String(80))
@@ -15,7 +16,8 @@ class ProdutoModel(banco.Model):
     tamanho = banco.Column(banco.String(10))
     preco = banco.Column(banco.Float(precision=2))
 
-    def __init__(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
+    def __init__(self,loja, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
+        self.loja = loja
         self.genero = genero
         self.secao = secao
         self.categoria = categoria
@@ -29,6 +31,7 @@ class ProdutoModel(banco.Model):
     
     def json(self):
         return {
+            'loja': self.loja,
             'produto_id': self.produto_id,
             'genero': self.genero,
             'secao': self.secao,

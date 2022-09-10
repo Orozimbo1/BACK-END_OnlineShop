@@ -14,6 +14,7 @@ class LojaModel(banco.Model):
     logradouro = banco.Column(banco.String(40))
     rua = banco.Column(banco.String(80))
     numero = banco.Column(banco.Integer)
+    produtos = banco.relationship('ProdutoModel')
 
     def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
         self.nome_fantasia = nome_fantasia
@@ -39,7 +40,8 @@ class LojaModel(banco.Model):
             'cidade': self.cidade,
             'logradouro': self.logradouro,
             'rua': self.rua,
-            'numero': self.numero
+            'numero': self.numero,
+            'produtos': [produto.json() for produto in self.produtos]
         }
     @classmethod
     def buscar_lojas(cls, nome_fantasia):
