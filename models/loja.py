@@ -69,5 +69,7 @@ class LojaModel(banco.Model):
         self.numero = numero
 
     def deletar_loja(self):
+        [produto.deletar_produto() for produto in self.produtos]
+
         banco.session.delete(self)
         banco.session.commit()

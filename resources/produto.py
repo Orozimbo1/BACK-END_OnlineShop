@@ -1,9 +1,10 @@
 from flask_restful import Resource, reqparse
+from models.loja import LojaModel
 from models.produto import ProdutoModel
 import sqlite3
 
 argumentos = reqparse.RequestParser()
-argumentos.add_argument('loja', type=str,required=True, help="Todo produto deve pertencer à uma loja.")
+argumentos.add_argument('loja', type=str,required= True, help="Todo produto deve pertencer à uma loja.")
 argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido")
 argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido")
 argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido")
@@ -150,6 +151,8 @@ class ProdutoCadastro(Resource):
 
         dados = argumentos.parse_args()
         produto = ProdutoModel(**dados)
+        if not LojaModel.buscar_lojas(dados['loja']):
+            return {"mensagem": "A loja '{}' não existe.". format(dados['loja'])}
         try:
             produto.salvar_produto()
         except:
