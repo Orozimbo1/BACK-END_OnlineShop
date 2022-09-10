@@ -25,7 +25,8 @@ def normalizar_caminho_parametros(genero=None,
                             limit = 10,
                             offset = 0, **dados):
     if genero:
-        return{ genero: genero,
+        return{ 
+                genero: genero,
                 secao: secao,
                 categoria: categoria,
                 estilo: estilo,
@@ -34,9 +35,11 @@ def normalizar_caminho_parametros(genero=None,
                 preco_min: preco_min,
                 preco_max: preco_max,
                 limit: limit,
-                offset: offset}
+                offset: offset
+        }
 
-    return  {   secao: secao,
+    return  {   
+                secao: secao,
                 categoria: categoria,
                 estilo: estilo,
                 cor: cor,
@@ -44,20 +47,21 @@ def normalizar_caminho_parametros(genero=None,
                 preco_min: preco_min,
                 preco_max: preco_max,
                 limit: limit,
-                offset: offset}
+                offset: offset
+            }
 
 caminho_parametros = reqparse.RequestParser()
 caminho_parametros.add_argument('genero', type=str)
 caminho_parametros.add_argument('secao', type=str)
-caminho_parametros.add_argument('categoria', type=str)
-caminho_parametros.add_argument('estilo', type=str)
-caminho_parametros.add_argument('nome', type=str)
-caminho_parametros.add_argument('cor', type=str)
-caminho_parametros.add_argument('tamanho', type=str)
-caminho_parametros.add_argument('preco_min', type=float)
-caminho_parametros.add_argument('preco_max', type=float)
-caminho_parametros.add_argument('limit', type=float)
-caminho_parametros.add_argument('offset', type=float)
+# caminho_parametros.add_argument('categoria', type=str)
+# caminho_parametros.add_argument('estilo', type=str)
+# caminho_parametros.add_argument('nome', type=str)
+# caminho_parametros.add_argument('cor', type=str)
+# caminho_parametros.add_argument('tamanho', type=str)
+# caminho_parametros.add_argument('preco_min', type=float)
+# caminho_parametros.add_argument('preco_max', type=float)
+# caminho_parametros.add_argument('limit', type=float)
+# caminho_parametros.add_argument('offset', type=float)
 
 
 
@@ -72,9 +76,9 @@ class Produtos(Resource):
         parametros = normalizar_caminho_parametros(**dados_validos)
         
         if not parametros.get('genero'):
-            consulta = "SELECT * FROM produtos WHERE secao = ? and categoria = ? and estilo = ? and nome = ? and cor = ? and tamanho = ? and (preco >= ? and preco <= ?) LIMIT ? OFFSET ?"
-            tupla = tuple([parametros[chave] for chave in parametros])
-            resultado = cursor.execute(consulta, tupla)
+            consulta = "SELECT * FROM produtos"
+            # tupla = tuple([parametros[chave] for chave in parametros])
+            resultado = cursor.execute(consulta)
         else:
             consulta = "SELECT * FROM produtos WHERE genero = ? and secao = ? and categoria = ? and estilo = ? and nome = ? and cor = ? and tamanho = ? and (preco > ? and preco < ?) LIMIT ? OFFSET ?"
             tupla = tuple([parametros[chave] for chave in parametros])
@@ -83,15 +87,17 @@ class Produtos(Resource):
         produtos = []
         for linha in resultado:
             produtos.append({
-                    "genero" : linha[0],
-                    "secao" : linha [1],
-                    "categoria" : linha[2],
-                    "estilo" : linha[3],
-                    "nome": linha[4],
-                    "descricao" :linha[5],
-                    "cor" : linha[6],
-                    "tamanho" : linha[7],
-                    "preco" : linha[8]
+                    "produto_id" : linha[0],
+                    "genero" : linha[1],
+                    "secao" : linha [2],
+                    "categoria" : linha[3],
+                    "estilo" : linha[4],
+                    "nome": linha[5],
+                    "descricao" :linha[6],
+                    "qtd_estoque" : linha[7],
+                    "cor" : linha[8],
+                    "tamanho" : linha[9],
+                    "preco" : linha[10]
                     })
 
         return {"produtos": produtos}
