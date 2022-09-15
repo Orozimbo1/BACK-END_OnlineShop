@@ -1,20 +1,21 @@
-from sql_alquemy import banco
+from sql_alquemy import Base, engine, session
+from sqlalchemy import Column, String, Integer
 
-class LojaModel(banco.Model):
+class LojaModel(Base):
     __tablename__ = 'lojas'
 
-    loja_id = banco.Column(banco.Integer, primary_key=True)
-    nome_fantasia = banco.Column(banco.String(40))
-    email = banco.Column (banco.String(100))
-    senha = banco.Column(banco.String(40))
-    CNPJ = banco.Column(banco.String(20))
-    telefone = banco.Column(banco.String(20))
-    CEP = banco.Column(banco.String(10))
-    cidade = banco.Column(banco.String(40)) 
-    logradouro = banco.Column(banco.String(40))
-    rua = banco.Column(banco.String(80))
-    numero = banco.Column(banco.Integer)
-    produtos = banco.relationship('ProdutoModel')
+    loja_id = Column(Integer, primary_key=True)
+    nome_fantasia = Column(String(40))
+    email = Column (String(100))
+    senha = Column(String(40))
+    CNPJ = Column(String(20))
+    telefone = Column(String(20))
+    CEP = Column(String(10))
+    cidade = Column(String(40)) 
+    logradouro = Column(String(40))
+    rua = Column(String(80))
+    numero = Column(Integer)
+    # produtos = relationship('ProdutoModel')
 
     def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
         self.nome_fantasia = nome_fantasia
@@ -41,11 +42,18 @@ class LojaModel(banco.Model):
             'logradouro': self.logradouro,
             'rua': self.rua,
             'numero': self.numero,
-            'produtos': [produto.json() for produto in self.produtos]
+            # 'produtos': [produto.json() for produto in self.produtos]
         }
+
+    @classmethod
+    def buscar_todas_lojas(cls):
+        resultado = session.query(LojaModel).all()
+        lojas = [loja.json() for loja in resultado]
+        return lojas
+
     @classmethod
     def buscar_lojas(cls, nome_fantasia):
-        loja = cls.query.filter_by(nome_fantasia=nome_fantasia).first()
+        loja = session.query(LojaModel).filter_by(nome_fantasia=nome_fantasia).first()
 
         if loja:
             return loja
@@ -53,8 +61,8 @@ class LojaModel(banco.Model):
 
     
     def salvar_loja(self):
-        banco.session.add(self)
-        banco.session.commit()
+        session.add(self)
+        session.commit()
 
     def atualizar_loja(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
         self.nome_fantasia = nome_fantasia
@@ -69,7 +77,9 @@ class LojaModel(banco.Model):
         self.numero = numero
 
     def deletar_loja(self):
-        [produto.deletar_produto() for produto in self.produtos]
+        # [produto.deletar_produto() for produto in self.produtos]
 
-        banco.session.delete(self)
-        banco.session.commit()
+        session.delete(self)
+        session.commit()
+
+Base.metadata.create_all(engine)

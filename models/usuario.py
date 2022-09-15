@@ -1,20 +1,21 @@
-from sql_alquemy import banco
+from sql_alquemy import Base, engine, session
+from sqlalchemy import Column, String, Integer
 
-class UsuarioModel(banco.Model):
+class UsuarioModel(Base):
     __tablename__ = 'usuarios'
 
-    usuario_id = banco.Column(banco.Integer, primary_key=True)
-    nome = banco.Column(banco.String(80))
-    sobrenome = banco.Column(banco.String(80))
-    email = banco.Column(banco.String(40))
-    senha = banco.Column(banco.String(40))
-    telefone = banco.Column(banco.String(20))
-    CPF = banco.Column(banco.String(13))
-    CEP = banco.Column(banco.String(10))
-    cidade = banco.Column(banco.String(80))
-    logradouro = banco.Column(banco.String(80))
-    rua = banco.Column(banco.String(80))
-    numero = banco.Column(banco.Integer)
+    usuario_id = Column(Integer, primary_key=True)
+    nome = Column(String(80))
+    sobrenome = Column(String(80))
+    email = Column(String(40))
+    senha = Column(String(40))
+    telefone = Column(String(20))
+    CPF = Column(String(13))
+    CEP = Column(String(10))
+    cidade = Column(String(80))
+    logradouro = Column(String(80))
+    rua = Column(String(80))
+    numero = Column(Integer)
     
 
     def __init__(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
@@ -51,18 +52,23 @@ class UsuarioModel(banco.Model):
             'email': self.email
         }
 
+    @classmethod
+    def buscar_todos_usuarios(cls):
+        resultado = session.query(UsuarioModel).all()
+        usuarios = [usuario.json() for usuario in resultado]
+        return usuarios
 
     @classmethod
     def buscar_usuario(cls, usuario_id):
-        usuario = cls.query.filter_by(usuario_id=usuario_id).first()
+        usuario = session.query(UsuarioModel).filter_by(usuario_id=usuario_id).first()
 
         if usuario:
             return usuario
         return None
-    
+
     @classmethod
     def buscar_email_usuario(cls, email):
-        usuario = cls.query.filter_by(email=email).first()
+        usuario = session.query(UsuarioModel).filter_by(email=email).first()
 
         if usuario:
             return usuario
@@ -70,8 +76,8 @@ class UsuarioModel(banco.Model):
 
     def salvar_usuario(self):
 
-        banco.session.add(self)
-        banco.session.commit()
+        session.add(self)
+        session.commit()
 
     def atualizar_usuario(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
         self.nome = nome
@@ -87,5 +93,7 @@ class UsuarioModel(banco.Model):
         self.numero = numero
 
     def deletar_usuario(self):
-        banco.session.delete(self)
-        banco.session.commit()
+        session.delete(self)
+        session.commit()
+
+Base.metadata.create_all(engine)

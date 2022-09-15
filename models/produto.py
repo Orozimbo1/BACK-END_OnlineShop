@@ -1,23 +1,22 @@
-from sql_alquemy import banco
+from sql_alquemy import Base, engine, session
+from sqlalchemy import Column, String, Integer, Float
 
-class ProdutoModel(banco.Model):
+class ProdutoModel(Base):
     __tablename__ = 'produtos'
 
-    loja = banco.Column(banco.String, banco.ForeignKey('lojas.nome_fantasia'))
-    produto_id = banco.Column(banco.Integer, primary_key=True)
-    genero = banco.Column(banco.String(80))
-    secao = banco.Column(banco.String(80))
-    categoria = banco.Column(banco.String(100))
-    estilo = banco.Column(banco.String(80))
-    nome = banco.Column(banco.String(40))
-    descricao = banco.Column(banco.String(600))
-    qtd_estoque = banco.Column(banco.Integer)
-    cor = banco.Column(banco.String(10))
-    tamanho = banco.Column(banco.String(10))
-    preco = banco.Column(banco.Float(precision=2))
+    produto_id = Column(Integer, primary_key=True)
+    genero = Column(String(255))
+    secao = Column(String(255))
+    categoria = Column(String(255))
+    estilo = Column(String(255))
+    nome = Column(String(255))
+    descricao = Column(String(600))
+    qtd_estoque = Column(Integer)
+    cor = Column(String(255))
+    tamanho = Column(String(255))
+    preco = Column(Float(precision=2))
 
-    def __init__(self,loja, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
-        self.loja = loja
+    def __init__(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
         self.genero = genero
         self.secao = secao
         self.categoria = categoria
@@ -31,7 +30,6 @@ class ProdutoModel(banco.Model):
     
     def json(self):
         return {
-            'loja': self.loja,
             'produto_id': self.produto_id,
             'genero': self.genero,
             'secao': self.secao,
@@ -44,17 +42,24 @@ class ProdutoModel(banco.Model):
             'tamanho': self.tamanho,
             'preco': self.preco
         }
+
+    @classmethod
+    def buscar_todos_produtos(cls):
+        resultado = session.query(ProdutoModel).all()
+        produtos = [produto.json() for produto in resultado]
+        return produtos
+
     @classmethod
     def buscar_produtos(cls, produto_id):
-        produto = cls.query.filter_by(produto_id=produto_id).first()
+        produto = session.query(ProdutoModel).filter_by(produto_id=produto_id).first()
 
         if produto:
             return produto
         return False
     
     def salvar_produto(self):
-        banco.session.add(self)
-        banco.session.commit()
+        session.add(self)
+        session.commit()
 
     def atualizar_produto(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco ):
         self.genero = genero
@@ -69,5 +74,7 @@ class ProdutoModel(banco.Model):
         self.preco = preco
 
     def deletar_produto(self):
-        banco.session.delete(self)
-        banco.session.commit()
+        session.delete(self)
+        session.commit()
+
+Base.metadata.create_all(engine)

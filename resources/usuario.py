@@ -1,10 +1,7 @@
-from enum import unique
-from os import access
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from werkzeug.security import safe_str_cmp
 from blacklist import BLACKLIST
-
 from models.usuario import UsuarioModel
 
 argumentos = reqparse.RequestParser()
@@ -23,7 +20,8 @@ argumentos.add_argument('numero', type=int)
 class Usuarios(Resource):
 
     def get(self):
-        return {'usuarios': [usuario.json() for usuario in UsuarioModel.query.all()]}
+        usuarios = UsuarioModel.buscar_todos_usuarios()
+        return usuarios
 
 class Usuario(Resource):
 

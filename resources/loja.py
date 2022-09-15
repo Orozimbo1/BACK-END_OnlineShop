@@ -18,7 +18,8 @@ argumentos.add_argument('numero', type=int, required=True, help= " O campo 'Núm
 class Lojas(Resource):
 
     def get(self):
-        return {"Lojas": [loja.json() for loja in LojaModel.query.all()]}
+        lojas = LojaModel.buscar_todas_lojas()
+        return lojas
 
 class Loja(Resource):
 
