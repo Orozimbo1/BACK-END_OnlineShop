@@ -17,6 +17,7 @@ class LojaModel(Base):
     rua = Column(String(80))
     numero = Column(Integer)
     produtos = relationship('ProdutoModel', backref="lojas")
+    vendas = relationship('VendaModel', backref="lojas")
 
     def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
         self.nome_fantasia = nome_fantasia
@@ -43,7 +44,8 @@ class LojaModel(Base):
             'logradouro': self.logradouro,
             'rua': self.rua,
             'numero': self.numero,
-            'produtos': [produto.json() for produto in self.produtos]
+            'produtos': [produto.json() for produto in self.produtos],
+            'vendas': [venda.json() for venda in self.vendas]
         }
 
     @classmethod

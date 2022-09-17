@@ -7,6 +7,7 @@ from blacklist import BLACKLIST
 from resources.produto import Produtos, Produto, ProdutoCadastro
 from resources.loja import Lojas, Loja, LojaCadastro
 from resources.venda import Venda, Vendas, VendaCadastro
+from resources.compra import Compra, Compras, CompraCadastro
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = engine
@@ -42,6 +43,9 @@ api.add_resource(LojaCadastro, '/loja/cadastro')
 api.add_resource(VendaCadastro, '/venda/cadastro')
 api.add_resource(Vendas, '/vendas')
 api.add_resource(Venda, '/venda/<int:venda_id>')
+api.add_resource(CompraCadastro, '/compra/cadastro')
+api.add_resource(Compras, '/compras')
+api.add_resource(Compra, '/compra/<int:compra_id>')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -6,18 +6,23 @@ class VendaModel(Base):
     __tablename__ = 'vendas'
 
     venda_id = Column(Integer, primary_key=True)
-    produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
-    produto = relationship("ProdutoModel", backref="vendas")
+    loja_id = Column(Integer, ForeignKey("lojas.loja_id"))
+    produto_id = Column(Integer)
+    # produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
+    # usuario_id = Column(Integer, ForeignKey("usuarios.usuario_id"))
+    # usuario = relationship("UsuarioModel", backref="vendas")
 
-    def __init__(self, produto_id):
+    def __init__(self, loja_id, produto_id):
         self.produto_id = produto_id
-        
-        
+        self.loja_id = loja_id
+        # self.usuario_id = usuario_id
     
     def json(self):
         return {
             'venda_id': self.venda_id,
-            'produto_id': self.produto_id
+            'loja_id': self.loja_id,
+            'produto_id': self.produto_id,
+            # 'usuario_id': self.usuario_id
             
         }
 
