@@ -3,16 +3,17 @@ from models.loja import LojaModel
 from models.produto import ProdutoModel
 
 argumentos = reqparse.RequestParser()
-argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido")
-argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido")
-argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido")
-argumentos.add_argument('estilo', type=str,required= True, help= " O campo 'Estilo' precisa ser preenchido")
-argumentos.add_argument('nome', type=str,required= True, help= " O campo 'Nome' precisa ser preenchido")
-argumentos.add_argument('descricao', type=str,)
-argumentos.add_argument('qtd_estoque', type=int,required= True, help= " O campo 'Quantidade em estoque' precisa ser preenchido")
-argumentos.add_argument('cor', type=str,required= True, help= " O campo 'Cor' precisa ser preenchido")
-argumentos.add_argument('tamanho', type=str,required= True, help= " O campo 'Tamanho' precisa ser preenchido")
-argumentos.add_argument('preco', type=float,required= True, help= " O campo 'Preço' precisa ser preenchido")
+argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido.")
+argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido.")
+argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido.")
+argumentos.add_argument('estilo', type=str,required= True, help= " O campo 'Estilo' precisa ser preenchido.")
+argumentos.add_argument('nome', type=str,required= True, help= " O campo 'Nome' precisa ser preenchido.")
+argumentos.add_argument('descricao', type=str)
+argumentos.add_argument('qtd_estoque', type=int,required= True, help= " O campo 'Quantidade em estoque' precisa ser preenchido.")
+argumentos.add_argument('cor', type=str,required= True, help= " O campo 'Cor' precisa ser preenchido.")
+argumentos.add_argument('tamanho', type=str,required= True, help= " O campo 'Tamanho' precisa ser preenchido.")
+argumentos.add_argument('preco', type=float,required= True, help= " O campo 'Preço' precisa ser preenchido.")
+argumentos.add_argument('loja_id', type=int,required= True, help= " O produto tem que estar associado à alguma loja.")
 
 class Produtos(Resource):
 
@@ -64,9 +65,9 @@ class ProdutoCadastro(Resource):
 
         dados = argumentos.parse_args()
         produto = ProdutoModel(**dados)
-        produto.salvar_produto()
-        # try:
-        #     produto.salvar_produto()
-        # except:
-        #     return {"mensagem":"Ocorreu um erro interno"}, 500
+        # produto.salvar_produto()
+        try:
+            produto.salvar_produto()
+        except:
+            return {"mensagem":"Ocorreu um erro interno"}, 500
         return produto.json()
