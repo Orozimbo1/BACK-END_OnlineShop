@@ -1,5 +1,6 @@
 from sql_alquemy import Base, engine, session
 from sqlalchemy import Column, String, Integer
+from sqlalchemy.orm import relationship
 
 class LojaModel(Base):
     __tablename__ = 'lojas'
@@ -15,7 +16,7 @@ class LojaModel(Base):
     logradouro = Column(String(40))
     rua = Column(String(80))
     numero = Column(Integer)
-    # produtos = relationship('ProdutoModel')
+    produtos = relationship('ProdutoModel', backref="lojas")
 
     def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
         self.nome_fantasia = nome_fantasia
@@ -42,7 +43,7 @@ class LojaModel(Base):
             'logradouro': self.logradouro,
             'rua': self.rua,
             'numero': self.numero,
-            # 'produtos': [produto.json() for produto in self.produtos]
+            'produtos': [produto.json() for produto in self.produtos]
         }
 
     @classmethod
@@ -77,7 +78,7 @@ class LojaModel(Base):
         self.numero = numero
 
     def deletar_loja(self):
-        # [produto.deletar_produto() for produto in self.produtos]
+        [produto.deletar_produto() for produto in self.produtos]
 
         session.delete(self)
         session.commit()

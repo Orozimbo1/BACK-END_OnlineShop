@@ -1,5 +1,6 @@
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, String, Integer, Float
+from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship
 
 class ProdutoModel(Base):
     __tablename__ = 'produtos'
@@ -15,8 +16,9 @@ class ProdutoModel(Base):
     cor = Column(String(255))
     tamanho = Column(String(255))
     preco = Column(Float(precision=2))
+    loja_id = Column(Integer, ForeignKey("lojas.loja_id"))
 
-    def __init__(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
+    def __init__(self,loja_id, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
         self.genero = genero
         self.secao = secao
         self.categoria = categoria
@@ -27,9 +29,11 @@ class ProdutoModel(Base):
         self.cor = cor
         self.tamanho = tamanho
         self.preco = preco
+        self.loja_id = loja_id
     
     def json(self):
         return {
+            'loja_id': self.loja_id,
             'produto_id': self.produto_id,
             'genero': self.genero,
             'secao': self.secao,
