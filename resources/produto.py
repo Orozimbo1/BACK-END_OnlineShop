@@ -65,9 +65,11 @@ class ProdutoCadastro(Resource):
 
         dados = argumentos.parse_args()
         produto = ProdutoModel(**dados)
-        # produto.salvar_produto()
-        try:
-            produto.salvar_produto()
-        except:
-            return {"mensagem":"Ocorreu um erro interno"}, 500
-        return produto.json()
+        loja = LojaModel.buscar_loja_por_id(dados.get('loja_id'))
+        if loja:
+            try:
+                produto.salvar_produto()
+            except:
+                return {"mensagem":"Ocorreu um erro interno"}, 500
+            return produto.json()
+        return {"mensagem": "Essa loja não existe. Por favor insira um 'id' válido."}

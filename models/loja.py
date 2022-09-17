@@ -59,6 +59,14 @@ class LojaModel(Base):
         if loja:
             return loja
         return False
+    
+    @classmethod
+    def buscar_loja_por_id(cls, loja_id):
+        loja = session.query(LojaModel).filter_by(loja_id=loja_id).first()
+
+        if loja:
+            return loja
+        return False
 
     
     def salvar_loja(self):
