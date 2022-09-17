@@ -76,7 +76,7 @@ class UsuarioCadastro(Resource):
             usuario.salvar_usuario()
         except:
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
-        return {"mensagem": "Usuário '{}' criado com sucesso.".format(dados['nome'] + ' ' + dados['sobrenome'])}, 201
+        return usuario.json()
 
 class UsuarioLogin(Resource):
     

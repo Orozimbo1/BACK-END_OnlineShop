@@ -7,9 +7,7 @@ class CompraModel(Base):
 
     compra_id = Column(Integer, primary_key=True)
     usuario_id = Column(Integer, ForeignKey("usuarios.usuario_id"))
-    usuario = relationship("UsuarioModel", backref="compras")
-    produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
-    produto = relationship("ProdutoModel", backref="vendas")
+    produto_id = Column(Integer)
 
     def __init__(self, usuario_id, produto_id):
         self.usuario_id = usuario_id
@@ -17,7 +15,7 @@ class CompraModel(Base):
     
     def json(self):
         return {
-            'venda_id': self.venda_id,
+            'compra_id': self.compra_id,
             'usuario_id': self.usuario_id,
             'produto_id': self.produto_id
         }

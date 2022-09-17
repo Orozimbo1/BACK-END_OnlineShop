@@ -1,5 +1,6 @@
 from sql_alquemy import Base, engine, session
 from sqlalchemy import Column, String, Integer
+from sqlalchemy.orm import relationship
 
 class UsuarioModel(Base):
     __tablename__ = 'usuarios'
@@ -16,6 +17,7 @@ class UsuarioModel(Base):
     logradouro = Column(String(80))
     rua = Column(String(80))
     numero = Column(Integer)
+    compras = relationship('CompraModel', backref="usuarios")
     
 
     def __init__(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
@@ -43,7 +45,8 @@ class UsuarioModel(Base):
             'cidade': self.cidade,
             'logradouro': self.logradouro,
             'rua': self.rua,
-            'numero': self.numero
+            'numero': self.numero,
+            'compras': [compra.json() for compra in self.compras]
         }
     
     def jsonLogin(self):

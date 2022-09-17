@@ -38,8 +38,9 @@ class CompraCadastro(Resource):
 
         dados = argumentos.parse_args()
         compra = CompraModel(**dados)
-        try:
-            compra.salvar_compra()
-        except:
-            return {"mensagem":"Ocorreu um erro interno"}, 500
+        compra.salvar_compra()
+        # try:
+        #     compra.salvar_compra()
+        # except:
+        #     return {"mensagem":"Ocorreu um erro interno"}, 500
         return compra.json()
