@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.compra import CompraModel
+from models.usuario import UsuarioModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('usuario_id', type=int,required= True, help= " O campo 'usuario' precisa ser preenchido.")
@@ -38,9 +39,11 @@ class CompraCadastro(Resource):
 
         dados = argumentos.parse_args()
         compra = CompraModel(**dados)
-        compra.salvar_compra()
-        # try:
-        #     compra.salvar_compra()
-        # except:
-        #     return {"mensagem":"Ocorreu um erro interno"}, 500
-        return compra.json()
+        usuario = UsuarioModel.buscar_usuario(dados.get('usuario_id'))
+        if usuario:
+            try:
+                compra.salvar_compra()
+            except:
+                return {"mensagem":"Ocorreu um erro interno"}, 500
+            return compra.json()
+        return {"mensagem":"Usuário não encontrado."}, 500

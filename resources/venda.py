@@ -40,8 +40,11 @@ class VendaCadastro(Resource):
 
         dados = argumentos.parse_args()
         venda = VendaModel(**dados)
-        try:
-            venda.salvar_venda()
-        except:
-            return {"mensagem":"Ocorreu um erro interno"}, 500
-        return venda.json()
+        loja = LojaModel.buscar_loja_por_id(dados.get('loja_id'))
+        if loja:
+            try:
+                venda.salvar_venda()
+            except:
+                return {"mensagem":"Ocorreu um erro interno"}, 500
+            return venda.json()
+        return {"mensagem":"A loja não foi encontrada"}, 500
