@@ -1,4 +1,5 @@
 from sql_alquemy import engine
+from flask_cors import CORS
 from flask import Flask, jsonify
 from flask_restful import Api
 from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, UsuarioLogout
@@ -10,6 +11,7 @@ from resources.venda import Venda, Vendas, VendaCadastro
 from resources.compra import Compra, Compras, CompraCadastro
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = engine
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'asdfghjklç'
