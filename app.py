@@ -10,7 +10,9 @@ from resources.loja import Lojas, Loja, LojaCadastro
 from resources.venda import Venda, Vendas, VendaCadastro
 from resources.compra import Compra, Compras, CompraCadastro
 
+
 app = Flask(__name__)
+
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = engine
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

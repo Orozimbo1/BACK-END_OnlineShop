@@ -1,6 +1,8 @@
 from sql_alquemy import Base, engine, session
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash
+
 
 class UsuarioModel(Base):
     __tablename__ = 'usuarios'
@@ -9,7 +11,7 @@ class UsuarioModel(Base):
     nome = Column(String(80))
     sobrenome = Column(String(80))
     email = Column(String(40))
-    senha = Column(String(40))
+    senha = Column(String(200))
     telefone = Column(String(20))
     CPF = Column(String(13))
     CEP = Column(String(10))
@@ -48,12 +50,15 @@ class UsuarioModel(Base):
             'numero': self.numero,
             'compras': [compra.json() for compra in self.compras]
         }
+
     
     def jsonLogin(self):
         return {
             'usuario_id': self.usuario_id,
             'email': self.email
         }
+    
+    
 
     @classmethod
     def buscar_todos_usuarios(cls):
@@ -77,8 +82,11 @@ class UsuarioModel(Base):
             return usuario
         return None
 
-    def salvar_usuario(self):
+    def hash_senha(self, senha):
+        hash = generate_password_hash(senha)
+        self.senha = hash
 
+    def salvar_usuario(self):
         session.add(self)
         session.commit()
 

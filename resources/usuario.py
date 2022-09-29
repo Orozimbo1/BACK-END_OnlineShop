@@ -1,8 +1,12 @@
+from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from werkzeug.security import safe_str_cmp
 from blacklist import BLACKLIST
 from models.usuario import UsuarioModel
+from flask_bcrypt import Bcrypt
+from werkzeug.security import generate_password_hash
+
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('nome', type=str, required=True, help="O campo 'nome' não pode ser deixado em branco.")
@@ -66,15 +70,21 @@ class UsuarioCadastro(Resource):
 
     def post(self):
 
-        dados =argumentos.parse_args()
+        dados = argumentos.parse_args()
+        hash = generate_password_hash(dados['senha'])
+        
+        
 
         if UsuarioModel.buscar_email_usuario(dados['email']):
             return {"mensagem": "Email '{}' já cadastrado".format(dados['email'])}, 404
+        
 
         usuario = UsuarioModel(**dados)
         try:
+            usuario.hash_senha(dados['senha'])
             usuario.salvar_usuario()
-        except:
+        except Exception as e:
+            print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
         return usuario.json()
 
