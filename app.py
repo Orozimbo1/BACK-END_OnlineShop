@@ -6,7 +6,7 @@ from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, 
 from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 from resources.produto import Produtos, Produto, ProdutoCadastro
-from resources.loja import Lojas, Loja, LojaCadastro
+from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 from resources.venda import Venda, Vendas, VendaCadastro
 from resources.compra import Compra, Compras, CompraCadastro
 
@@ -50,6 +50,8 @@ api.add_resource(Venda, '/venda/<int:venda_id>')
 api.add_resource(CompraCadastro, '/compra/cadastro')
 api.add_resource(Compras, '/compras')
 api.add_resource(Compra, '/compra/<int:compra_id>')
+api.add_resource(LojaLogin, '/loja/login')
+api.add_resource(LojaLogout, '/loja/logout' )
 
 if __name__ == '__main__':
     app.run(debug=True)

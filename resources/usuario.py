@@ -1,11 +1,10 @@
 from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
-from werkzeug.security import safe_str_cmp
+from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 from blacklist import BLACKLIST
 from models.usuario import UsuarioModel
 from flask_bcrypt import Bcrypt
-from werkzeug.security import generate_password_hash
 
 
 argumentos = reqparse.RequestParser()
@@ -73,11 +72,9 @@ class UsuarioCadastro(Resource):
         dados = argumentos.parse_args()
         hash = generate_password_hash(dados['senha'])
         
-        
 
         if UsuarioModel.buscar_email_usuario(dados['email']):
             return {"mensagem": "Email '{}' já cadastrado".format(dados['email'])}, 404
-        
 
         usuario = UsuarioModel(**dados)
         try:
@@ -99,7 +96,7 @@ class UsuarioLogin(Resource):
 
         usuario = UsuarioModel.buscar_email_usuario(dados['email'])
 
-        if usuario and safe_str_cmp(usuario.senha, dados['senha']):
+        if usuario and safe_str_cmp and check_password_hash(usuario.senha, dados['senha']):
             token_de_acesso = create_access_token(identity=usuario.usuario_id)
             return {'token de acesso': token_de_acesso}, 200
         return {'mensagem': 'Usuário ou senha incorreto.'}, 401

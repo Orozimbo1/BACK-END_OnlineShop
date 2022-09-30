@@ -1,6 +1,7 @@
 from sql_alquemy import Base, engine, session
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash
 
 class LojaModel(Base):
     __tablename__ = 'lojas'
@@ -8,7 +9,7 @@ class LojaModel(Base):
     loja_id = Column(Integer, primary_key=True)
     nome_fantasia = Column(String(40))
     email = Column (String(100))
-    senha = Column(String(40))
+    senha = Column(String(200))
     CNPJ = Column(String(20))
     telefone = Column(String(20))
     CEP = Column(String(10))
@@ -61,6 +62,13 @@ class LojaModel(Base):
         if loja:
             return loja
         return False
+
+    @classmethod
+    def buscar_loja_por_email(cls, email):
+        loja= session.query(LojaModel).filter_by(email=email).first()
+        if loja:
+            return loja
+        return False
     
     @classmethod
     def buscar_loja_por_id(cls, loja_id):
@@ -69,6 +77,10 @@ class LojaModel(Base):
         if loja:
             return loja
         return False
+    
+    def hash_senha_loja(self, senha):
+        hash = generate_password_hash(senha)
+        self.senha = hash
 
     
     def salvar_loja(self):
