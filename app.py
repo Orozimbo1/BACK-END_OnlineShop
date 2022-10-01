@@ -8,6 +8,7 @@ from blacklist import BLACKLIST
 from resources.produto import Produtos, Produto, ProdutoCadastro
 from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
+from resources.venda import VendaCadastro, Vendas, Venda
 
 
 app = Flask(__name__)
@@ -48,6 +49,9 @@ api.add_resource(LojaLogout, '/loja/logout' )
 api.add_resource(VendasProd, '/vendas-produtos')
 api.add_resource(VendaProd, '/venda-produto/<int:venda_prod_id>')
 api.add_resource(VendaProdCadastro, '/venda-produto/cadastro')
+api.add_resource(Vendas, '/vendas')
+api.add_resource(Venda, '/venda/<int:venda_id>')
+api.add_resource(VendaCadastro, '/venda/cadastro')
 
 if __name__ == '__main__':
     app.run(debug=True)

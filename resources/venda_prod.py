@@ -4,7 +4,7 @@ from models.venda_prod import VendaProdModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('produto_id', type=int, required=True, help= "O campo 'produto_id' precisa ser preenchido.")
-# argumentos.add_argument('venda_id', type=int, required=True, help= "O campo 'venda_id' precisa ser preenchido.")
+argumentos.add_argument('venda_id', type=int, help= "O campo 'venda_id' precisa ser preenchido.")
 
 
 class VendasProd(Resource):

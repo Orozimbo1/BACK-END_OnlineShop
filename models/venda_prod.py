@@ -1,25 +1,23 @@
 from sql_alquemy import Base, engine, session
 from sqlalchemy import Column, Integer, ForeignKey
+from models.venda import VendaModel
 
 class VendaProdModel(Base):
     __tablename__ = 'venda_prod'
 
     venda_prod_id = Column(Integer, primary_key=True)
     produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
-    # venda_id = Column(Integer, ForeignKey("vendas.venda_id"))
-    
+    venda_id = Column(Integer, ForeignKey("vendas.venda_id"))
 
-    def __init__(self, produto_id,/
-    #  venda_id/
-     ):
+    def __init__(self, produto_id, venda_id):
         self.produto_id = produto_id
-        # self.venda_id = venda_id
+        self.venda_id = venda_id
 
     def json(self):
         return {
             'venda_prod_id': self.venda_prod_id,
             'produto_id': self.produto_id,
-            # 'venda_id': self.venda_id
+            'venda_id': self.venda_id
         }
 
     @classmethod

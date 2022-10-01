@@ -19,6 +19,7 @@ class UsuarioModel(Base):
     logradouro = Column(String(80))
     rua = Column(String(80))
     numero = Column(Integer)
+    compras = relationship('VendaModel', backref="usuarios")
     
 
     def __init__(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
@@ -46,7 +47,8 @@ class UsuarioModel(Base):
             'cidade': self.cidade,
             'logradouro': self.logradouro,
             'rua': self.rua,
-            'numero': self.numero
+            'numero': self.numero,
+            'compras': [compra.json() for compra in self.compras]
         }
 
     # Ver se pode apagar!!!
