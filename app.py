@@ -7,8 +7,7 @@ from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 from resources.produto import Produtos, Produto, ProdutoCadastro
 from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
-from resources.venda import Venda, Vendas, VendaCadastro
-from resources.compra import Compra, Compras, CompraCadastro
+from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
 
 
 app = Flask(__name__)
@@ -44,14 +43,11 @@ api.add_resource(ProdutoCadastro, '/produto/cadastro')
 api.add_resource(Lojas, '/lojas')
 api.add_resource(Loja, '/loja/<string:nome_fantasia>')
 api.add_resource(LojaCadastro, '/loja/cadastro')
-api.add_resource(VendaCadastro, '/venda/cadastro')
-api.add_resource(Vendas, '/vendas')
-api.add_resource(Venda, '/venda/<int:venda_id>')
-api.add_resource(CompraCadastro, '/compra/cadastro')
-api.add_resource(Compras, '/compras')
-api.add_resource(Compra, '/compra/<int:compra_id>')
 api.add_resource(LojaLogin, '/loja/login')
 api.add_resource(LojaLogout, '/loja/logout' )
+api.add_resource(VendasProd, '/vendas-produtos')
+api.add_resource(VendaProd, '/venda-produto/<int:venda_prod_id>')
+api.add_resource(VendaProdCadastro, '/venda-produto/cadastro')
 
 if __name__ == '__main__':
     app.run(debug=True)
