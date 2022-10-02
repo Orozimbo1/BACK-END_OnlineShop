@@ -5,6 +5,7 @@ class ProdutoModel(Base):
     __tablename__ = 'produtos'
 
     produto_id = Column(Integer, primary_key=True)
+    imagem_produto = Column(String(255))
     genero = Column(String(255))
     secao = Column(String(255))
     categoria = Column(String(255))
@@ -14,10 +15,11 @@ class ProdutoModel(Base):
     qtd_estoque = Column(Integer)
     cor = Column(String(255))
     tamanho = Column(String(255))
-    preco = Column(Float(precision=2))
+    valor = Column(Float(precision=2))
     loja_id = Column(Integer, ForeignKey("lojas.loja_id"))
 
-    def __init__(self,loja_id, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco):
+    def __init__(self,loja_id, imagem_produto, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, valor):
+        self.imagem_produto = imagem_produto
         self.genero = genero
         self.secao = secao
         self.categoria = categoria
@@ -27,12 +29,13 @@ class ProdutoModel(Base):
         self.qtd_estoque = qtd_estoque
         self.cor = cor
         self.tamanho = tamanho
-        self.preco = preco
+        self.valor = valor
         self.loja_id = loja_id
     
     def json(self):
         return {
             'loja_id': self.loja_id,
+            'imagem_produto': self.imagem_produto,
             'produto_id': self.produto_id,
             'genero': self.genero,
             'secao': self.secao,
@@ -43,7 +46,7 @@ class ProdutoModel(Base):
             'qtd_estoque': self.qtd_estoque,
             'cor': self.cor,
             'tamanho': self.tamanho,
-            'preco': self.preco
+            'valor': self.valor
         }
 
     @classmethod
@@ -64,7 +67,7 @@ class ProdutoModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_produto(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, preco ):
+    def atualizar_produto(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, valor ):
         self.genero = genero
         self.secao = secao
         self.categoria = categoria
@@ -74,7 +77,7 @@ class ProdutoModel(Base):
         self.qtd_estoque = qtd_estoque
         self.cor = cor
         self.tamanho = tamanho
-        self.preco = preco
+        self.valor = valor
 
     def deletar_produto(self):
         session.delete(self)
