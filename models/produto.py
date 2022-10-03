@@ -6,7 +6,7 @@ from models.produto_atributos.secao import SecaoProdutoModel
 from models.produto_atributos.genero import GeneroProdutoModel
 from models.produto_atributos.categoria import CategoriaProdutoModel
 from models.produto_atributos.estilo import EstiloProdutoModel
-from models.produto_atributos.qtd_estoque import QtdProdutoModel
+
 
 class ProdutoModel(Base):
     __tablename__ = 'produtos' 
@@ -19,9 +19,9 @@ class ProdutoModel(Base):
     estilo_produto_id = Column(Integer, ForeignKey(EstiloProdutoModel.estilo_produto_id))
     nome = Column(String(255))
     descricao = Column(String(600))
-    qtd_estoque_id = Column(Integer, ForeignKey(QtdProdutoModel.qtd_estoque_id))
+    qtd_estoque_id = Column(Integer)
     cores_produto = relationship('CorProdutoModel', backref="produtos")
-    tamanhos_produto = relationship('TamanhoProdutoModel', backref="produtos")
+    tamanhos_produto = Column(String(255))
     valor = Column(Float(precision=2))
     loja_id = Column(Integer, ForeignKey(LojaModel.loja_id))
 

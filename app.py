@@ -12,9 +12,7 @@ from resources.produto_atributos.cor import Cor, Cores, CorCadastro
 from resources.produto_atributos.estilo import Estilos, Estilo, EstiloCadastro
 from resources.produto_atributos.genero import Generos, Genero, GeneroCadastro
 from resources.produto_atributos.imagens_produto import ImagensProdutos, ImagemProduto, ImagemProdutoCadastro
-from resources.produto_atributos.qtd_estoque import QtdProdutos, QtdProduto, QtdProdutoCadastro
 from resources.produto_atributos.secao import Secoes, Secao, SecaoCadastro
-from resources.produto_atributos.tamanho import Tamanhos, Tamanho, TamanhoCadastro
 from resources.produto import Produtos, Produto, ProdutoCadastro
 from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 from resources.loja_atributos.cep import CepLojas, CepLoja, CepLojaCadastro
@@ -105,15 +103,10 @@ api.add_resource(GeneroCadastro, '/genero/cadastro')
 api.add_resource(ImagensProdutos, '/imagens-do-produto')
 api.add_resource(ImagemProduto, '/imagem-do-produto/<int:imagem_produto_id>')
 api.add_resource(ImagemProdutoCadastro, '/imagem-do-produto/cadastro')
-api.add_resource(QtdProdutos, '/qtd-do-estoque')
-api.add_resource(QtdProduto, '/qtd-do-estoque/<int:qtd_produto_id>')
-api.add_resource(QtdProdutoCadastro, '/qtd-do-estoque/cadastro')
 api.add_resource(Secoes, '/secoes')
 api.add_resource(Secao, '/secao/<int:secao_produto_id>')
 api.add_resource(SecaoCadastro, '/secao/cadastro')
-api.add_resource(Tamanhos, '/tamanhos')
-api.add_resource(Tamanho, '/tamanho/<int:tamanho_produto_id>')
-api.add_resource(TamanhoCadastro, '/tamanho/cadastro')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
