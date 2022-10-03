@@ -9,7 +9,7 @@ from models.produto_atributos.estilo import EstiloProdutoModel
 from models.produto_atributos.qtd_estoque import QtdProdutoModel
 
 class ProdutoModel(Base):
-    __tablename__ = 'produtos'
+    __tablename__ = 'produtos' 
 
     produto_id = Column(Integer, primary_key=True)
     imagens_produto = relationship('ImagemProdutoModel', backref="produtos")

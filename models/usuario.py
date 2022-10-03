@@ -1,7 +1,9 @@
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash
+from models.usuario_atributos.contato import ContatoUsuarioModel
+from models.usuario_atributos.cep import CepUsuarioModel
 
 
 class UsuarioModel(Base):
@@ -12,28 +14,20 @@ class UsuarioModel(Base):
     sobrenome = Column(String(80))
     email = Column(String(40))
     senha = Column(String(200))
-    telefone = Column(String(20))
     CPF = Column(String(13))
-    CEP = Column(String(10))
-    cidade = Column(String(80))
-    logradouro = Column(String(80))
-    rua = Column(String(80))
-    numero = Column(Integer)
+    contato_usuario_id = Column(Integer, ForeignKey(ContatoUsuarioModel.contato_usuario_id))
+    endereco_usuario_id = Column(Integer, ForeignKey(CepUsuarioModel.endereco_usuario_id))
     compras = relationship('VendaModel', backref="usuarios")
     
 
-    def __init__(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
+    def __init__(self, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
         self.senha = senha
-        self.telefone = telefone
         self.CPF = CPF
-        self.CEP = CEP
-        self.cidade = cidade
-        self.logradouro = logradouro
-        self.rua = rua
-        self.numero = numero
+        self.contato_usuario_id = contato_usuario_id
+        self.endereco_usuario_id = endereco_usuario_id
     
     def json(self):
         return {
@@ -41,13 +35,9 @@ class UsuarioModel(Base):
             'nome': self.nome,
             'sobrenome': self.sobrenome,
             'email': self.email,
-            'telefone': self.telefone,
             'CPF': self.CPF,
-            'CEP': self.CEP,
-            'cidade': self.cidade,
-            'logradouro': self.logradouro,
-            'rua': self.rua,
-            'numero': self.numero,
+            'contato_usuario_id': self.contato_usuario_id,
+            'endereco_usuario_id': self.endereco_usuario_id,
             'compras': [compra.json() for compra in self.compras]
         }
 
@@ -89,18 +79,14 @@ class UsuarioModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_usuario(self, nome, sobrenome, email, senha, telefone, CPF, CEP, cidade, logradouro, rua, numero):
+    def atualizar_usuario(self, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
         self.senha = senha
-        self.telefone = telefone
         self.CPF = CPF
-        self.CEP = CEP
-        self.cidade = cidade
-        self.logradouro = logradouro
-        self.rua = rua
-        self.numero = numero
+        self.contato_usuario_id = contato_usuario_id
+        self.endereco_usuario_id = endereco_usuario_id
 
     def deletar_usuario(self):
         session.delete(self)

@@ -11,12 +11,8 @@ argumentos.add_argument('nome_fantasia', type=str, required=True, help= " O camp
 argumentos.add_argument('email', type=str, required=True, help= "O campo 'e-mail' precisa ser preenchido")
 argumentos.add_argument('senha', type=str, required=True, help= "O campo 'senha' precisa ser preenchido]")
 argumentos.add_argument('CNPJ', type=str, required=True, help= " O campo 'Seção' precisa ser preenchido")
-argumentos.add_argument('telefone', required=True, type=str, help= " O campo 'Telefone' precisa ser preenchido")
-argumentos.add_argument('CEP', type=str, required=True, help= " O campo 'CEP' precisa ser preenchido")
-argumentos.add_argument('cidade', type=str, required=True, help= " O campo 'Cidade' precisa ser preenchido")
-argumentos.add_argument('logradouro', type=str, required=True, help= " O campo 'Logradouro' precisa ser preenchido")
-argumentos.add_argument('rua', type=str, required=True, help= " O campo 'Rua' precisa ser preenchido")
-argumentos.add_argument('numero', type=int, required=True, help= " O campo 'Número' precisa ser preenchido")
+argumentos.add_argument('contato_loja_id', type=int)
+argumentos.add_argument('endereco_loja_id', type=int)
 
 class Lojas(Resource):
 

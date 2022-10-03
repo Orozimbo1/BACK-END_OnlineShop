@@ -2,9 +2,9 @@ from sql_alquemy import engine
 from flask_cors import CORS
 from flask import Flask, jsonify
 from flask_restful import Api
-from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, UsuarioLogout
 from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
+from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, UsuarioLogout
 from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
 from resources.venda import VendaCadastro, Vendas, Venda
 from resources.produto_atributos.categoria import Categorias, Categoria, CategoriaCadastro
@@ -17,6 +17,10 @@ from resources.produto_atributos.secao import Secoes, Secao, SecaoCadastro
 from resources.produto_atributos.tamanho import Tamanhos, Tamanho, TamanhoCadastro
 from resources.produto import Produtos, Produto, ProdutoCadastro
 from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
+from resources.loja_atributos.cep import CepLojas, CepLoja, CepLojaCadastro
+from resources.loja_atributos.contato import ContatoLojas, ContatoLoja, ContatoLojaCadastro
+from resources.usuario_atributos.cep import CepUsuarios, CepUsuario, CepUsuarioCadastro
+from resources.usuario_atributos.contato import ContatoUsuarios, ContatoUsuario, ContatoUsuarioCadastro
 
 app = Flask(__name__)
 
@@ -47,6 +51,14 @@ api.add_resource(Usuario, '/usuario/<int:usuario_id>')
 api.add_resource(UsuarioCadastro, '/usuario/cadastro')
 api.add_resource(UsuarioLogin, '/login')
 api.add_resource(UsuarioLogout, '/logout')
+## Testar   ---- >>> Daqui <<<------
+api.add_resource(CepUsuarios, '/usuarios-enderecos')
+api.add_resource(CepUsuario, '/usuario-endereco/<int:endereco_usuario_id>')
+api.add_resource(CepUsuarioCadastro, '/usuario-endereco/cadastro')
+api.add_resource(ContatoUsuarios, '/usuarios-contatos')
+api.add_resource(ContatoUsuario, '/usuario-contato/<int:contato_usuario_id>')
+api.add_resource(ContatoUsuarioCadastro, '/usuario-contato/cadastro')
+##         ---- >>> Ate aqui <<<------
 
 ## ROTAS DAS LOJAS
 
@@ -54,7 +66,15 @@ api.add_resource(Lojas, '/lojas')
 api.add_resource(Loja, '/loja/<string:nome_fantasia>')
 api.add_resource(LojaCadastro, '/loja/cadastro')
 api.add_resource(LojaLogin, '/loja/login')
-api.add_resource(LojaLogout, '/loja/logout' )
+api.add_resource(LojaLogout, '/loja/logout')
+## Testar   ---- >>> Daqui <<<------
+api.add_resource(CepLojas, '/lojas-enderecos')
+api.add_resource(CepLoja, '/loja-endereco/<int:endereco_loja_id>')
+api.add_resource(CepLojaCadastro, '/loja-endereco/cadastro')
+api.add_resource(ContatoLojas, '/lojas-contatos')
+api.add_resource(ContatoLoja, '/loja-contato/<int:contato_loja_id>')
+api.add_resource(ContatoLojaCadastro, '/loja-contato/cadastro')
+##         ---- >>> Ate aqui <<<------
 
 ## ROTAS DAS VENDAS
 
