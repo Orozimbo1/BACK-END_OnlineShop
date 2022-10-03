@@ -3,17 +3,17 @@ from sql_alquemy import Base, engine, session
 from sqlalchemy import Column, Integer
 
 class QtdProdutoModel(Base):
-    __tablename__ = 'qtd_produtos'
+    __tablename__ = 'qtd_estoques'
 
-    qtd_produto_id = Column(Integer, primary_key=True)
+    qtd_estoque_id = Column(Integer, primary_key=True)
     qtd_produto = Column(Integer)
 
-    def __init__(self, nome_qtd):
-        self.nome_qtd = nome_qtd
+    def __init__(self, qtd_produto):
+        self.qtd_produto = qtd_produto
 
     def json(self):
         return {
-            'qtd_produto_id': self.qtd_produto_id,
+            'qtd_estoque_id': self.qtd_estoque_id,
             'qtd_produto': self.qtd_produto
         }
 
@@ -24,8 +24,8 @@ class QtdProdutoModel(Base):
         return qtds
 
     @classmethod
-    def buscar_qtd(cls, qtd_produto_id):
-        qtd = session.query(QtdProdutoModel).filter_by(qtd_produto_id=qtd_produto_id).first()
+    def buscar_qtd(cls, qtd_estoque_id):
+        qtd = session.query(QtdProdutoModel).filter_by(qtd_estoque_id=qtd_estoque_id).first()
 
         if qtd:
             return qtd

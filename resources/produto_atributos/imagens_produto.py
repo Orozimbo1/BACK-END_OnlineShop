@@ -4,6 +4,7 @@ from models.produto_atributos.imagens_produto import ImagemProdutoModel
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('url_imagem', type=str, required=True, help= "O campo 'nome_imagens_produto' precisa ser preenchido.")
 argumentos.add_argument('descricao_imagem', type=str, required=True, help= "O campo 'nome_imagens_produto' precisa ser preenchido.")
+argumentos.add_argument('produto_id', type=str, required=True, help= "O campo 'produto_id' precisa ser preenchido.")
 
 
 class ImagensProdutos(Resource):

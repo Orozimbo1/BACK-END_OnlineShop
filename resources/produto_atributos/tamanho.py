@@ -3,7 +3,7 @@ from models.produto_atributos.tamanho import TamanhoProdutoModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('nome_tamanho', type=str, required=True, help= "O campo 'nome_tamanho' precisa ser preenchido.")
-
+argumentos.add_argument('produto_id', type=str, required=True, help= "O campo 'produto_id' precisa ser preenchido.")
 
 class Tamanhos(Resource):
 

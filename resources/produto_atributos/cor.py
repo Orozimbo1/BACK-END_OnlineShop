@@ -3,7 +3,7 @@ from models.produto_atributos.cor import CorProdutoModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('nome_cor', type=str, required=True, help= "O campo 'nome_cor' precisa ser preenchido.")
-
+argumentos.add_argument('produto_id', type=str, help= "O campo 'produto_id' precisa ser preenchido.")
 
 class Cores(Resource):
 

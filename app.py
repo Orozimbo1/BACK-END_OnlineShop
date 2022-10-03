@@ -5,8 +5,6 @@ from flask_restful import Api
 from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, UsuarioLogout
 from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
-from resources.produto import Produtos, Produto, ProdutoCadastro
-from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
 from resources.venda import VendaCadastro, Vendas, Venda
 from resources.produto_atributos.categoria import Categorias, Categoria, CategoriaCadastro
@@ -17,6 +15,8 @@ from resources.produto_atributos.imagens_produto import ImagensProdutos, ImagemP
 from resources.produto_atributos.qtd_estoque import QtdProdutos, QtdProduto, QtdProdutoCadastro
 from resources.produto_atributos.secao import Secoes, Secao, SecaoCadastro
 from resources.produto_atributos.tamanho import Tamanhos, Tamanho, TamanhoCadastro
+from resources.produto import Produtos, Produto, ProdutoCadastro
+from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 
 app = Flask(__name__)
 

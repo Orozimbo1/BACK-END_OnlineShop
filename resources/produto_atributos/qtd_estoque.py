@@ -14,25 +14,25 @@ class QtdProdutos(Resource):
 
 class QtdProduto(Resource):
 
-    def get(self, qtd_produto_id):
+    def get(self, qtd_estoque_id):
         
-        qtd_produto = QtdProdutoModel.buscar_qtd(qtd_produto_id)
+        qtd_produto = QtdProdutoModel.buscar_qtd(qtd_estoque_id)
         if qtd_produto:
             return qtd_produto.json()
         return {'mensagem': 'A quantidade de produto não foi encontrada.'}, 404
 
-    def put(self, qtd_produto_id):
+    def put(self, qtd_estoque_id):
         
         dados = argumentos.parse_args()
 
-        qtd_produto_encontrada = QtdProdutoModel.buscar_qtd(qtd_produto_id)
+        qtd_produto_encontrada = QtdProdutoModel.buscar_qtd(qtd_estoque_id)
 
         if qtd_produto_encontrada:
             qtd_produto_encontrada.atualizar_qtd(**dados)
             qtd_produto_encontrada.salvar_produto()
             return qtd_produto_encontrada.json(), 200
 
-        qtd_produto = QtdProdutoModel( qtd_produto_id, **dados )
+        qtd_produto = QtdProdutoModel( qtd_estoque_id, **dados )
 
         try:
             qtd_produto.salvar_qtd()
@@ -40,8 +40,8 @@ class QtdProduto(Resource):
             return {"Ocorreu um erro interno"}, 500
         return qtd_produto.json(), 201
 
-    def delete(self, qtd_produto_id):
-        qtd_produto = QtdProdutoModel.buscar_qtd(qtd_produto_id)
+    def delete(self, qtd_estoque_id):
+        qtd_produto = QtdProdutoModel.buscar_qtd(qtd_estoque_id)
         if qtd_produto:
             try:
                 qtd_produto.deletar_qtd()

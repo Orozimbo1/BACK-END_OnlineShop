@@ -1,20 +1,24 @@
 from tokenize import String
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from models.produto import ProdutoModel
 
 class CorProdutoModel(Base):
     __tablename__ = 'cor_produtos'
 
     cor_produto_id = Column(Integer, primary_key=True)
     nome_cor = Column(String(100))
+    produto_id = Column(Integer, ForeignKey(ProdutoModel.produto_id))
 
-    def __init__(self, nome_cor):
+    def __init__(self, nome_cor, produto_id):
         self.nome_cor = nome_cor
+        self.produto_id = produto_id
 
     def json(self):
         return {
             'cor_produto_id': self.cor_produto_id,
-            'nome_cor': self.nome_cor
+            'nome_cor': self.nome_cor,
+            'produto_id': self.produto_id
         }
 
     @classmethod

@@ -1,6 +1,7 @@
 from tokenize import String
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from models.produto import ProdutoModel
 
 class ImagemProdutoModel(Base):
     __tablename__ = 'imagem_produtos'
@@ -8,16 +9,19 @@ class ImagemProdutoModel(Base):
     imagem_produto_id = Column(Integer, primary_key=True)
     url_imagem = Column(String(100))
     descricao_imagem = Column(String(200))
+    produto_id = Column(Integer, ForeignKey(ProdutoModel.produto_id))
 
-    def __init__(self, url_imagem, descricao_imagem):
+    def __init__(self, url_imagem, descricao_imagem, produto_id):
         self.url_imagem = url_imagem
         self.descricao_imagem = descricao_imagem
+        self.produto_id = produto_id
 
     def json(self):
         return {
             'imagem_produto_id': self.imagem_produto_id,
             'url_imagem': self.url_imagem,
-            'descricao_imagem': self.descricao_imagem
+            'descricao_imagem': self.descricao_imagem,
+            'produto_id': self.produto_id
         }
 
     @classmethod
