@@ -7,6 +7,8 @@ from blacklist import BLACKLIST
 from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, UsuarioLogout
 from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
 from resources.venda import VendaCadastro, Vendas, Venda
+from resources.venda_atributos.frete import Fretes, Frete, FreteCadastro
+from resources.venda_atributos.pagamento import FormaPagamentos, FormaPagamento, FormaPagamentoCadastro
 from resources.produto_atributos.categoria import Categorias, Categoria, CategoriaCadastro
 from resources.produto_atributos.estilo import Estilos, Estilo, EstiloCadastro
 from resources.produto_atributos.genero import Generos, Genero, GeneroCadastro
@@ -80,6 +82,12 @@ api.add_resource(VendaProdCadastro, '/venda-produto/cadastro')
 api.add_resource(Vendas, '/vendas')
 api.add_resource(Venda, '/venda/<int:venda_id>')
 api.add_resource(VendaCadastro, '/venda/cadastro')
+api.add_resource(Fretes, '/fretes')
+api.add_resource(Frete, '/frete/<int:frete_id>')
+api.add_resource(FreteCadastro, '/frete/cadastro')
+api.add_resource(FormaPagamentos, '/forma-de-pagamentos')
+api.add_resource(FormaPagamento, '/forma-de-pagamento/<int:pagamento_id>')
+api.add_resource(FormaPagamentoCadastro, '/forma-de-pagamento/cadastro')
 
 ## ROTAS DOS PRODUTOS
 
