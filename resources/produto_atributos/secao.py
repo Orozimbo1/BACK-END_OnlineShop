@@ -9,7 +9,7 @@ class Secoes(Resource):
 
     def get(self):
 
-        secoes = SecaoProdutoModel.buscar_todas_secoes
+        secoes = SecaoProdutoModel.buscar_todas_secoes()
         return secoes
 
 class Secao(Resource):

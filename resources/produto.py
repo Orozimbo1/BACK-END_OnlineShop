@@ -9,7 +9,9 @@ argumentos.add_argument('categoria_produto_id', type=str, help= " O campo 'Categ
 argumentos.add_argument('estilo_produto_id', type=str, help= " O campo 'Estilo' precisa ser preenchido.")
 argumentos.add_argument('nome', type=str, help= " O campo 'Nome' precisa ser preenchido.")
 argumentos.add_argument('descricao', type=str)
-argumentos.add_argument('qtd_estoque_id', type=int, help= " O campo 'Quantidade em estoque' precisa ser preenchido.")
+argumentos.add_argument('cor_produto', type=str, help= " O campo 'Cor' precisa ser preenchido.")
+argumentos.add_argument('tamanho_produto', type=str, help= " O campo 'Tamanho' precisa ser preenchido.")
+argumentos.add_argument('qtd_estoque', type=int, help= " O campo 'Quantidade em estoque' precisa ser preenchido.")
 argumentos.add_argument('valor', type=float, help= " O campo 'Valor' precisa ser preenchido.")
 argumentos.add_argument('loja_id', type=int, help= " O produto tem que estar associado à alguma loja.")
 

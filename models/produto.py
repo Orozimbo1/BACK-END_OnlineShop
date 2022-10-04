@@ -25,7 +25,7 @@ class ProdutoModel(Base):
     valor = Column(Float(precision=2))
     loja_id = Column(Integer, ForeignKey(LojaModel.loja_id))
 
-    def __init__(self,loja_id,genero_produto_id,secao_produto_id,categoria_produto_id,estilo_produto_id,nome, descricao,qtd_estoque,cor_produto,tamanho_prouto,valor):
+    def __init__(self,loja_id,genero_produto_id,secao_produto_id,categoria_produto_id,estilo_produto_id,nome, descricao,qtd_estoque,cor_produto,tamanho_produto,valor):
         self.genero_produto_id = genero_produto_id
         self.secao_produto_id = secao_produto_id
         self.categoria_produto_id = categoria_produto_id
@@ -34,7 +34,7 @@ class ProdutoModel(Base):
         self.descricao = descricao
         self.qtd_estoque = qtd_estoque
         self.cor_produto = cor_produto
-        self.tamanho_produto = tamanho_prouto
+        self.tamanho_produto = tamanho_produto
         self.valor = valor
         self.loja_id = loja_id
     

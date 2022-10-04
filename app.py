@@ -64,14 +64,13 @@ api.add_resource(Loja, '/loja/<string:nome_fantasia>')
 api.add_resource(LojaCadastro, '/loja/cadastro')
 api.add_resource(LojaLogin, '/loja/login')
 api.add_resource(LojaLogout, '/loja/logout')
-## Testar   ---- >>> Daqui <<<------
 api.add_resource(CepLojas, '/lojas-enderecos')
 api.add_resource(CepLoja, '/loja-endereco/<int:endereco_loja_id>')
 api.add_resource(CepLojaCadastro, '/loja-endereco/cadastro')
 api.add_resource(ContatoLojas, '/lojas-contatos')
 api.add_resource(ContatoLoja, '/loja-contato/<int:contato_loja_id>')
 api.add_resource(ContatoLojaCadastro, '/loja-contato/cadastro')
-##         ---- >>> Ate aqui <<<------
+
 
 ## ROTAS DAS VENDAS
 
