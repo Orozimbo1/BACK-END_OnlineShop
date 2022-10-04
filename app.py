@@ -8,7 +8,6 @@ from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, 
 from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
 from resources.venda import VendaCadastro, Vendas, Venda
 from resources.produto_atributos.categoria import Categorias, Categoria, CategoriaCadastro
-from resources.produto_atributos.cor import Cor, Cores, CorCadastro
 from resources.produto_atributos.estilo import Estilos, Estilo, EstiloCadastro
 from resources.produto_atributos.genero import Generos, Genero, GeneroCadastro
 from resources.produto_atributos.imagens_produto import ImagensProdutos, ImagemProduto, ImagemProdutoCadastro
@@ -91,9 +90,6 @@ api.add_resource(ProdutoCadastro, '/produto/cadastro')
 api.add_resource(Categorias, '/categorias')
 api.add_resource(Categoria, '/categoria/<int:categoria_produto_id>')
 api.add_resource(CategoriaCadastro, '/categoria/cadastro')
-api.add_resource(Cores, '/cores')
-api.add_resource(Cor, '/cor/<int:cor_produto_id>')
-api.add_resource(CorCadastro, '/cor/cadastro')
 api.add_resource(Estilos, '/estilos')
 api.add_resource(Estilo, '/estilo/<int:estilo_produto_id>')
 api.add_resource(EstiloCadastro, '/estilo/cadastro')

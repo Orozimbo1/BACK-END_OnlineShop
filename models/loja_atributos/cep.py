@@ -5,15 +5,14 @@ class CepLojaModel(Base):
     __tablename__ = 'endereco_lojas'
 
     endereco_loja_id = Column(Integer, primary_key=True)
-    local_endereco = Column(String(255))
     CEP = Column(String(10))
     cidade = Column(String(40)) 
     logradouro = Column(String(40))
     rua = Column(String(80))
     numero = Column(Integer)
 
-    def __init__(self,local_endereco, CEP, cidade, logradouro, rua, numero):
-        self.local_endereco = local_endereco
+    def __init__(self, CEP, cidade, logradouro, rua, numero):
+        
         self.CEP = CEP
         self.cidade = cidade
         self.logradouro = logradouro
@@ -23,8 +22,6 @@ class CepLojaModel(Base):
     
     def json(self):
         return {
-            'endereco_loja_id': self.loja_id,
-            'local_endereco': self.local_endereco,
             'CEP': self.CEP,
             'cidade': self.cidade,
             'logradouro': self.logradouro,
