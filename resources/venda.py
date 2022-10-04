@@ -4,6 +4,10 @@ from models.venda import VendaModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('usuario_id', type=int, required=True, help= "O campo 'usuario_id' precisa ser preenchido.")
+argumentos.add_argument('pagamento_id', type=int, help= "O campo 'pagamento_id' precisa ser preenchido.")
+argumentos.add_argument('frete_id', type=int, help= "O campo 'frete_id' precisa ser preenchido.")
+argumentos.add_argument('total', type=int, help= "O campo 'total' precisa ser preenchido.")
+argumentos.add_argument('total_pago', type=int, help= "O campo 'total_pago' precisa ser preenchido.")
 
 
 class Vendas(Resource):

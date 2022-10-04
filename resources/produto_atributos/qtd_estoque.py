@@ -29,7 +29,7 @@ class QtdProduto(Resource):
 
         if qtd_produto_encontrada:
             qtd_produto_encontrada.atualizar_qtd(**dados)
-            qtd_produto_encontrada.salvar_produto()
+            qtd_produto_encontrada.salvar_qtd()
             return qtd_produto_encontrada.json(), 200
 
         qtd_produto = QtdProdutoModel( qtd_estoque_id, **dados )

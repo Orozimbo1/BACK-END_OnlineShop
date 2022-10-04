@@ -1,5 +1,5 @@
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Float
 from models.venda import VendaModel
 
 class VendaProdModel(Base):
@@ -7,16 +7,22 @@ class VendaProdModel(Base):
 
     venda_prod_id = Column(Integer, primary_key=True)
     produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
+    qtd_produtos = Column(Integer)
+    total = Column(Float(2))
     venda_id = Column(Integer, ForeignKey("vendas.venda_id"))
 
-    def __init__(self, produto_id, venda_id):
+    def __init__(self, produto_id, venda_id, qtd_produtos, total):
         self.produto_id = produto_id
         self.venda_id = venda_id
+        self.qtd_produtos = qtd_produtos
+        self.total = total
 
     def json(self):
         return {
             'venda_prod_id': self.venda_prod_id,
             'produto_id': self.produto_id,
+            'qtd_produtos': self.qtd_produtos,
+            'total': self.total,
             'venda_id': self.venda_id
         }
 
