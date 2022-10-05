@@ -50,14 +50,13 @@ api.add_resource(Usuario, '/usuario/<int:usuario_id>')
 api.add_resource(UsuarioCadastro, '/usuario/cadastro')
 api.add_resource(UsuarioLogin, '/login')
 api.add_resource(UsuarioLogout, '/logout')
-## Testar   ---- >>> Daqui <<<------
 api.add_resource(CepUsuarios, '/usuarios-enderecos')
 api.add_resource(CepUsuario, '/usuario-endereco/<int:endereco_usuario_id>')
 api.add_resource(CepUsuarioCadastro, '/usuario-endereco/cadastro')
 api.add_resource(ContatoUsuarios, '/usuarios-contatos')
 api.add_resource(ContatoUsuario, '/usuario-contato/<int:contato_usuario_id>')
 api.add_resource(ContatoUsuarioCadastro, '/usuario-contato/cadastro')
-##         ---- >>> Ate aqui <<<------
+
 
 ## ROTAS DAS LOJAS
 
