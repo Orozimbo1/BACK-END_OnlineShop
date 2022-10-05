@@ -23,7 +23,7 @@ class CepUsuarioModel(Base):
     
     def json(self):
         return {
-            'endereco_usuario_id': self.usuario_id,
+            'endereco_usuario_id': self.endereco_usuario_id,
             'local_endereco': self.local_endereco,
             'CEP': self.CEP,
             'cidade': self.cidade,
@@ -59,7 +59,6 @@ class CepUsuarioModel(Base):
         session.commit()
 
     def deletar_endereco(self):
-
         session.delete(self)
         session.commit()
 

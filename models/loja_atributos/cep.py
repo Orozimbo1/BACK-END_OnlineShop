@@ -22,6 +22,7 @@ class CepLojaModel(Base):
     
     def json(self):
         return {
+            'endereco_loja_id': self.endereco_loja_id,
             'CEP': self.CEP,
             'cidade': self.cidade,
             'logradouro': self.logradouro,

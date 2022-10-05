@@ -56,8 +56,8 @@ class Produto(Resource):
                 produto.deletar_produto()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
-            return{"mensagem": "Produto deletado com sucesso"}
-        return{"mensagem":"Produto não encontrado"}
+            return{"mensagem": "Produto deletado com sucesso"}, 200
+        return{"mensagem":"Produto não encontrado"},404
 
 class ProdutoCadastro(Resource):
 

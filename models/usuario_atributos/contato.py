@@ -51,7 +51,7 @@ class ContatoUsuarioModel(Base):
         return False
 
     def atualizar_contato(self, celular,titular_celular, telefone_fixo, titular_telefone_fixo, instagram, facebook, linkedin):
-        self.celular = celular
+        self.celular = celular 
         self.titular_celular = titular_celular
         self.telefone_fixo = telefone_fixo
         self.titular_telefone_fixo = titular_telefone_fixo

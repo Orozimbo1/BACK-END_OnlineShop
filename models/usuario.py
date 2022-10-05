@@ -79,14 +79,10 @@ class UsuarioModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_usuario(self, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
+    def atualizar_usuario(self, nome, sobrenome, email):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
-        self.senha = senha
-        self.CPF = CPF
-        self.contato_usuario_id = contato_usuario_id
-        self.endereco_usuario_id = endereco_usuario_id
 
     def deletar_usuario(self):
         session.delete(self)

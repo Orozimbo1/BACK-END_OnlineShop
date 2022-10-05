@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from sqlalchemy import null
 from models.loja import LojaModel
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
@@ -64,7 +65,7 @@ class LojaCadastro(Resource):
         hash = generate_password_hash(dados['senha'])
 
         if LojaModel.buscar_lojas(dados['nome_fantasia']):
-            return {"mensagem":"Loja '{}' já existente !".format(dados['nome_fantasia'])}, 404
+            return {"mensagem":"Loja '{}' já existente !".format(dados['nome_fantasia'])}, 401
 
         loja = LojaModel(**dados)
         try:
@@ -85,11 +86,11 @@ class LojaLogin(Resource):
         dados = atributos.parse_args()
 
         loja = LojaModel.buscar_loja_por_email(dados['email'])
-
+        
         if loja and safe_str_cmp and check_password_hash(loja.senha, dados['senha']):
             token_de_acesso = create_access_token(identity=loja.loja_id)
             return {'token de acesso': token_de_acesso}, 200
-        return {'mensagem': 'Usuário ou senha incorreto.'}, 401
+        return {'mensagem': 'Credenciais incorretas.'}, 401
 
 class LojaLogout(Resource):
     

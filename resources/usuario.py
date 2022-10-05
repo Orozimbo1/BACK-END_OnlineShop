@@ -33,15 +33,19 @@ class Usuario(Resource):
     # @jwt_required()
     def put(self, usuario_id):
         
-        dados = argumentos.parse_args()
+        arjenRobben = reqparse.RequestParser()
+        arjenRobben.add_argument('nome', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
+        arjenRobben.add_argument('sobrenome', type=str, required=True, help="O campo 'senha' não pode ser deixado em branco.")
+        arjenRobben.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
+        rvp = arjenRobben.parse_args()
 
         usuario_encontrado = UsuarioModel.buscar_usuario(usuario_id)
         if usuario_encontrado:
-            usuario_encontrado.atualizar_usuario(**dados)
+            usuario_encontrado.atualizar_usuario(**rvp)
             usuario_encontrado.salvar_usuario()
             return usuario_encontrado.json(), 200
 
-        usuario = UsuarioModel(usuario_id, **dados)
+        usuario = UsuarioModel(usuario_id, **rvp)
         try:
             usuario.salvar_usuario()
         except:

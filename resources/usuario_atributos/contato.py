@@ -52,7 +52,7 @@ class ContatoUsuario(Resource):
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return{"mensagem": "Contato deletado com sucesso."}
-        return{"mensagem":"Contato não encontrado"}
+        return{"mensagem":"Contato não encontrado"},404
 
 class ContatoUsuarioCadastro(Resource):
 

@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse
 from models.usuario_atributos.cep import CepUsuarioModel
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('local_endereco', type=str)
 argumentos.add_argument('CEP', type=str)
 argumentos.add_argument('cidade', type=str)
 argumentos.add_argument('logradouro', type=str)
@@ -30,12 +31,12 @@ class CepUsuario(Resource):
         endereco = CepUsuarioModel.buscar_endereco_por_id(endereco_usuario_id)
         if endereco:
             endereco.atualizar_endereco(**dados)
-            endereco.salvar_usuario()
+            endereco.salvar_endereco()
             return endereco.json(), 200
         endereco =CepUsuarioModel(endereco_usuario_id, **dados )
 
         try:
-            endereco.salvar_usuario()
+            endereco.salvar_endereco()
         except:
             return {"Ocorreu um erro interno"}, 500
         return endereco.json(), 201
@@ -44,11 +45,11 @@ class CepUsuario(Resource):
         endereco = CepUsuarioModel.buscar_endereco_por_id(endereco_usuario_id)
         if endereco:
             try:
-                endereco.deletar_usuario()
+                endereco.deletar_endereco()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return{"mensagem": "Endereço deletado com sucesso"}
-        return{"mensagem":"Endereço não encontrado"}
+        return{"mensagem":"Endereço não encontrado"},404
 
 class CepUsuarioCadastro(Resource):
 
