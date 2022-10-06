@@ -9,7 +9,7 @@ class VendaProdModel(Base):
     produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
     qtd_produtos = Column(Integer)
     total = Column(Float(2))
-    venda_id = Column(Integer, ForeignKey("vendas.venda_id"))
+    venda_id = Column(Integer, ForeignKey(VendaModel.venda_id))
 
     def __init__(self, produto_id, venda_id, qtd_produtos, total):
         self.produto_id = produto_id

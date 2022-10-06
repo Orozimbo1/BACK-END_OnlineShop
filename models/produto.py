@@ -73,6 +73,9 @@ class ProdutoModel(Base):
         session.add(self)
         session.commit()
 
+    def atualizar_qtd_produto(self, qtd_estoque):
+        self.qtd_estoque = qtd_estoque
+
     def atualizar_produto(self,loja_id,genero_produto_id,secao_produto_id,categoria_produto_id,estilo_produto_id,nome, descricao,qtd_estoque,cor_produto,tamanho_produto,valor):
         self.genero_produto_id = genero_produto_id
         self.secao_produto_id = secao_produto_id

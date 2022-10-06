@@ -1,3 +1,4 @@
+from math import prod
 from flask_restful import Resource, reqparse
 from models.produto import ProdutoModel
 from models.venda_prod import VendaProdModel
@@ -44,7 +45,10 @@ class VendaProdCadastro(Resource):
         venda_prod = VendaProdModel(**dados)
         produto = ProdutoModel.buscar_produtos(dados.get('produto_id'))
         if produto:
+            qtd_estoque = produto.qtd_estoque - dados.get('qtd_produtos')
             try:
+                print(produto.json())
+                produto.atualizar_qtd_produto(qtd_estoque)
                 venda_prod.salvar_venda_prod()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
