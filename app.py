@@ -61,7 +61,7 @@ api.add_resource(ContatoUsuarioCadastro, '/usuario-contato/cadastro')
 ## ROTAS DAS LOJAS
 
 api.add_resource(Lojas, '/lojas')
-api.add_resource(Loja, '/loja/<string:nome_fantasia>')
+api.add_resource(Loja, '/loja/<int:loja_id>')
 api.add_resource(LojaCadastro, '/loja/cadastro')
 api.add_resource(LojaLogin, '/loja/login')
 api.add_resource(LojaLogout, '/loja/logout')

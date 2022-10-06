@@ -73,17 +73,18 @@ class ProdutoModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_produto(self, genero, secao, categoria, estilo, nome, descricao, qtd_estoque, cor, tamanho, valor ):
-        self.genero = genero
-        self.secao = secao
-        self.categoria = categoria
-        self.estilo = estilo
+    def atualizar_produto(self,loja_id,genero_produto_id,secao_produto_id,categoria_produto_id,estilo_produto_id,nome, descricao,qtd_estoque,cor_produto,tamanho_produto,valor):
+        self.genero_produto_id = genero_produto_id
+        self.secao_produto_id = secao_produto_id
+        self.categoria_produto_id = categoria_produto_id
+        self.estilo_produto_id = estilo_produto_id
         self.nome = nome
         self.descricao = descricao
         self.qtd_estoque = qtd_estoque
-        self.cor = cor
-        self.tamanho = tamanho
+        self.cor_produto = cor_produto
+        self.tamanho_produto = tamanho_produto
         self.valor = valor
+        self.loja_id = loja_id
 
     def deletar_produto(self):
         session.delete(self)

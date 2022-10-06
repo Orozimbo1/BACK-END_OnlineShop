@@ -42,14 +42,6 @@ class LojaModel(Base):
         return lojas
 
     @classmethod
-    def buscar_lojas(cls, nome_fantasia):
-        loja = session.query(LojaModel).filter_by(nome_fantasia=nome_fantasia).first()
-
-        if loja:
-            return loja
-        return False
-
-    @classmethod
     def buscar_loja_por_email(cls, email):
         loja= session.query(LojaModel).filter_by(email=email).first()
         if loja:
@@ -73,13 +65,12 @@ class LojaModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_loja(self, nome_fantasia, email, senha, CNPJ, contato_loja_id, endereco_loja_id):
+    def atualizar_loja(self, nome_fantasia, email, CNPJ, contato_loja_id, endereco_loja_id):
         self.nome_fantasia = nome_fantasia
         self.email = email
-        self.senha = senha
         self.CNPJ = CNPJ
         self.contato_loja_id = contato_loja_id
-        self.endereco_loja_id = endereco_loja_id 
+        self.endereco_loja_id = endereco_loja_id
 
     def deletar_loja(self):
         [produto.deletar_produto() for produto in self.produtos]

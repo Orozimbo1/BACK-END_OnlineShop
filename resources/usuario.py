@@ -33,24 +33,24 @@ class Usuario(Resource):
     # @jwt_required()
     def put(self, usuario_id):
         
-        arjenRobben = reqparse.RequestParser()
-        arjenRobben.add_argument('nome', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
-        arjenRobben.add_argument('sobrenome', type=str, required=True, help="O campo 'senha' não pode ser deixado em branco.")
-        arjenRobben.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
-        rvp = arjenRobben.parse_args()
+        atributos = reqparse.RequestParser()
+        atributos.add_argument('nome', type=str)
+        atributos.add_argument('sobrenome', type=str)
+        atributos.add_argument('email', type=str)
+        atributos.add_argument('CPF', type=str)
+        atributos.add_argument('contato_usuario_id', type=int)
+        atributos.add_argument('endereco_usuario_id', type=int)
+        data = atributos.parse_args()
 
         usuario_encontrado = UsuarioModel.buscar_usuario(usuario_id)
         if usuario_encontrado:
-            usuario_encontrado.atualizar_usuario(**rvp)
-            usuario_encontrado.salvar_usuario()
+            try:
+                usuario_encontrado.atualizar_usuario(**data)
+                print("aooba")
+                usuario_encontrado.salvar_usuario()
+            except:
+                return {'mensagem': 'Houve um erro tentando atualizar o usuário.'}, 500
             return usuario_encontrado.json(), 200
-
-        usuario = UsuarioModel(usuario_id, **rvp)
-        try:
-            usuario.salvar_usuario()
-        except:
-            return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
-        return usuario.json(), 201
 
     # @jwt_required()
     def delete(self, usuario_id):

@@ -62,6 +62,7 @@ class ContatoUsuarioCadastro(Resource):
 
         contato = ContatoUsuarioModel(**dados)
         try:
+            print(contato.json())
             contato.salvar_contato()
         except:
             return {'mensagem': 'Houve um erro tentando salvar contato.'}, 500

@@ -60,6 +60,7 @@ class ContatoUsuarioModel(Base):
         self.linkedin = linkedin
 
     def salvar_contato(self):
+        
         session.add(self)
         session.commit()
 

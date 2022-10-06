@@ -23,32 +23,34 @@ class Lojas(Resource):
 
 class Loja(Resource):
 
-    def get(self, nome_fantasia):
+    def get(self, loja_id):
         
-        loja = LojaModel.buscar_lojas(nome_fantasia)
+        loja = LojaModel.buscar_loja_por_id(loja_id)
         if loja:
             return loja.json()
         return {'mensagem': 'Loja não encontrada.'}, 404
 
-    def put(self, nome_fantasia):
+    def put(self, loja_id):
+        atributos = reqparse.RequestParser()
+        atributos.add_argument('nome_fantasia', type=str)
+        atributos.add_argument('email', type=str)
+        atributos.add_argument('CNPJ', type=str)
+        atributos.add_argument('contato_loja_id', type=int)
+        atributos.add_argument('endereco_loja_id', type=int)
         
-        dados = argumentos.parse_args()
+        data = atributos.parse_args()
 
-        loja_encontrada = LojaModel.buscar_lojas(nome_fantasia)
+        loja_encontrada = LojaModel.buscar_loja_por_id(loja_id)
         if loja_encontrada:
-            loja_encontrada.atualizar_loja(**dados)
-            loja_encontrada.salvar_loja()
+            try:
+                loja_encontrada.atualizar_loja(**data)
+                loja_encontrada.salvar_loja()
+            except:
+                return {"Ocorreu um erro interno"}, 500
             return loja_encontrada.json(), 200
-        loja =LojaModel(nome_fantasia, **dados )
 
-        try:
-            loja.salvar_loja()
-        except:
-            return {"Ocorreu um erro interno"}, 500
-        return loja.json(), 201
-
-    def delete(self, nome_fantasia):
-        loja = LojaModel.buscar_lojas(nome_fantasia)
+    def delete(self, loja_id):
+        loja = LojaModel.buscar_loja_por_id(loja_id)
         if loja:
             try:
                 loja.deletar_loja()
