@@ -48,9 +48,11 @@ class VendaProdCadastro(Resource):
             qtd_estoque = produto.qtd_estoque - dados.get('qtd_produtos')
             try:
                 print(produto.json())
-                produto.atualizar_qtd_produto(qtd_estoque)
-                venda_prod.salvar_venda_prod()
+                if qtd_estoque >=0:
+                    produto.atualizar_qtd_produto(qtd_estoque)
+                    venda_prod.salvar_venda_prod()
+                    return venda_prod.json()
+                return {"mensagem": "Produto esgotado."}
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
-            return venda_prod.json()
         return {"mensagem": "Esse produto não existe. Por favor insira um 'id' válido."}
