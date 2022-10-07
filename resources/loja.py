@@ -1,3 +1,4 @@
+from datetime import  timedelta
 from flask_restful import Resource, reqparse
 from sqlalchemy import null
 from models.loja import LojaModel
@@ -73,7 +74,8 @@ class LojaCadastro(Resource):
         try:
             loja.hash_senha_loja(dados['senha'])
             loja.salvar_loja()
-            token_de_acesso = create_access_token(identity=loja.loja_id)
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=loja.loja_id, expires_delta= expires)
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar loja.'}, 500
@@ -91,7 +93,8 @@ class LojaLogin(Resource):
         loja = LojaModel.buscar_loja_por_email(dados['email'])
         
         if loja and safe_str_cmp and check_password_hash(loja.senha, dados['senha']):
-            token_de_acesso = create_access_token(identity=loja.loja_id)
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=loja.loja_id, expires_delta= expires)
             return  (token_de_acesso, loja.loja_id), 200
         return {'mensagem': 'Credenciais incorretas.'}, 401
 

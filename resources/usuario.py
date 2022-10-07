@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import  timedelta
 from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
@@ -31,7 +31,7 @@ class Usuario(Resource):
             return usuario.json()
         return {'mensagem': 'Usuário  não encontrado.'}, 404
 
-    # @jwt_required()
+    @jwt_required()
     def put(self, usuario_id):
         
         atributos = reqparse.RequestParser()
@@ -53,7 +53,7 @@ class Usuario(Resource):
                 return {'mensagem': 'Houve um erro tentando atualizar o usuário.'}, 500
             return usuario_encontrado.json(), 200
 
-    # @jwt_required()
+    @jwt_required()
     def delete(self, usuario_id):
         usuario = UsuarioModel.buscar_usuario(usuario_id)
 
@@ -99,13 +99,14 @@ class UsuarioLogin(Resource):
         usuario = UsuarioModel.buscar_email_usuario(dados['email'])
 
         if usuario and safe_str_cmp and check_password_hash(usuario.senha, dados['senha']):
-            token_de_acesso = create_access_token(identity=usuario.usuario_id)
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=usuario.usuario_id, expires_delta=expires)
             return (token_de_acesso, usuario.usuario_id), 200
         return {'mensagem': 'Usuário ou senha incorreto.'}, 401
 
 class UsuarioLogout(Resource):
     
-    # @jwt_required()
+    @jwt_required()
     def post(self):
         jwt_id = get_jwt()['jti']
         BLACKLIST.add(jwt_id)
