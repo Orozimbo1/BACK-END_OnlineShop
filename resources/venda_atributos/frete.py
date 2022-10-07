@@ -20,7 +20,7 @@ class Frete(Resource):
         prazo_entrega = FreteModel.buscar_frete(frete_id)
         if prazo_entrega:
             return prazo_entrega.json()
-        return {'mensagem': 'A forma de pagamento não foi encontrada.'}, 404
+        return {'mensagem': 'O frete não foi encontrado.'}, 404
 
     def put(self, frete_id):
         
@@ -48,8 +48,8 @@ class Frete(Resource):
                 prazo_entrega.deletar_frete()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
-            return{"mensagem": "A forma de pagamento foi deletada com sucesso"}
-        return{"mensagem":"A forma de pagamento não foi encontrada."}
+            return{"mensagem": "O frete foi deletado com sucesso"},200
+        return{"mensagem":"O frete não foi encontrado."}
 
 class FreteCadastro(Resource):
 
@@ -61,4 +61,4 @@ class FreteCadastro(Resource):
             prazo_entrega.salvar_frete()
         except:
             return {"mensagem":"Ocorreu um erro interno"}, 500
-        return prazo_entrega.json()
+        return prazo_entrega.json(),201 
