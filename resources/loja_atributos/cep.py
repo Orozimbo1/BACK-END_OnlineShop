@@ -30,7 +30,7 @@ class CepLoja(Resource):
         endereco = CepLojaModel.buscar_endereco_por_id(endereco_loja_id)
         if endereco:
             endereco.atualizar_endereco(**dados)
-            endereco.salvar_loja()
+            endereco.salvar_endereco()
             return endereco.json(), 200
         endereco =CepLojaModel(endereco_loja_id, **dados )
 
