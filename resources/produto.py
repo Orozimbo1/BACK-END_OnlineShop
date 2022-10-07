@@ -3,17 +3,17 @@ from models.loja import LojaModel
 from models.produto import ProdutoModel
 
 argumentos = reqparse.RequestParser()
-argumentos.add_argument('genero', type=str,required= True, help= " O campo 'Gênero' precisa ser preenchido.")
-argumentos.add_argument('secao', type=str,required= True, help= " O campo 'Seção' precisa ser preenchido.")
-argumentos.add_argument('categoria', type=str,required= True, help= " O campo 'Categoria' precisa ser preenchido.")
-argumentos.add_argument('estilo', type=str,required= True, help= " O campo 'Estilo' precisa ser preenchido.")
-argumentos.add_argument('nome', type=str,required= True, help= " O campo 'Nome' precisa ser preenchido.")
+argumentos.add_argument('genero_produto_id', type=str)
+argumentos.add_argument('secao_produto_id', type=str)
+argumentos.add_argument('categoria_produto_id', type=str)
+argumentos.add_argument('estilo_produto_id', type=str)
+argumentos.add_argument('nome', type=str)
 argumentos.add_argument('descricao', type=str)
-argumentos.add_argument('qtd_estoque', type=int,required= True, help= " O campo 'Quantidade em estoque' precisa ser preenchido.")
-argumentos.add_argument('cor', type=str,required= True, help= " O campo 'Cor' precisa ser preenchido.")
-argumentos.add_argument('tamanho', type=str,required= True, help= " O campo 'Tamanho' precisa ser preenchido.")
-argumentos.add_argument('preco', type=float,required= True, help= " O campo 'Preço' precisa ser preenchido.")
-argumentos.add_argument('loja_id', type=int,required= True, help= " O produto tem que estar associado à alguma loja.")
+argumentos.add_argument('cor_produto', type=str)
+argumentos.add_argument('tamanho_produto', type=str)
+argumentos.add_argument('qtd_estoque', type=int)
+argumentos.add_argument('valor', type=float)
+argumentos.add_argument('loja_id', type=int)
 
 class Produtos(Resource):
 
@@ -56,8 +56,8 @@ class Produto(Resource):
                 produto.deletar_produto()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
-            return{"mensagem": "Produto deletado com sucesso"}
-        return{"mensagem":"Produto não encontrado"}
+            return{"mensagem": "Produto deletado com sucesso"}, 200
+        return{"mensagem":"Produto não encontrado"},404
 
 class ProdutoCadastro(Resource):
 
@@ -73,3 +73,9 @@ class ProdutoCadastro(Resource):
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return produto.json()
         return {"mensagem": "Essa loja não existe. Por favor insira um 'id' válido."}
+
+class ProdutoFiltro(Resource):
+    def get(self, genero_produto_id):
+
+        produtos = ProdutoModel.buscar_produtos_filtro(genero_produto_id)
+        return produtos

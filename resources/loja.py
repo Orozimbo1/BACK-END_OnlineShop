@@ -1,4 +1,6 @@
+from datetime import  timedelta
 from flask_restful import Resource, reqparse
+from sqlalchemy import null
 from models.loja import LojaModel
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
@@ -11,12 +13,8 @@ argumentos.add_argument('nome_fantasia', type=str, required=True, help= " O camp
 argumentos.add_argument('email', type=str, required=True, help= "O campo 'e-mail' precisa ser preenchido")
 argumentos.add_argument('senha', type=str, required=True, help= "O campo 'senha' precisa ser preenchido]")
 argumentos.add_argument('CNPJ', type=str, required=True, help= " O campo 'Seção' precisa ser preenchido")
-argumentos.add_argument('telefone', required=True, type=str, help= " O campo 'Telefone' precisa ser preenchido")
-argumentos.add_argument('CEP', type=str, required=True, help= " O campo 'CEP' precisa ser preenchido")
-argumentos.add_argument('cidade', type=str, required=True, help= " O campo 'Cidade' precisa ser preenchido")
-argumentos.add_argument('logradouro', type=str, required=True, help= " O campo 'Logradouro' precisa ser preenchido")
-argumentos.add_argument('rua', type=str, required=True, help= " O campo 'Rua' precisa ser preenchido")
-argumentos.add_argument('numero', type=int, required=True, help= " O campo 'Número' precisa ser preenchido")
+argumentos.add_argument('contato_loja_id', type=int)
+argumentos.add_argument('endereco_loja_id', type=int)
 
 class Lojas(Resource):
 
@@ -26,32 +24,34 @@ class Lojas(Resource):
 
 class Loja(Resource):
 
-    def get(self, nome_fantasia):
+    def get(self, loja_id):
         
-        loja = LojaModel.buscar_lojas(nome_fantasia)
+        loja = LojaModel.buscar_loja_por_id(loja_id)
         if loja:
             return loja.json()
         return {'mensagem': 'Loja não encontrada.'}, 404
 
-    def put(self, nome_fantasia):
+    def put(self, loja_id):
+        atributos = reqparse.RequestParser()
+        atributos.add_argument('nome_fantasia', type=str)
+        atributos.add_argument('email', type=str)
+        atributos.add_argument('CNPJ', type=str)
+        atributos.add_argument('contato_loja_id', type=int)
+        atributos.add_argument('endereco_loja_id', type=int)
         
-        dados = argumentos.parse_args()
+        data = atributos.parse_args()
 
-        loja_encontrada = LojaModel.buscar_lojas(nome_fantasia)
+        loja_encontrada = LojaModel.buscar_loja_por_id(loja_id)
         if loja_encontrada:
-            loja_encontrada.atualizar_loja(**dados)
-            loja_encontrada.salvar_loja()
+            try:
+                loja_encontrada.atualizar_loja(**data)
+                loja_encontrada.salvar_loja()
+            except:
+                return {"Ocorreu um erro interno"}, 500
             return loja_encontrada.json(), 200
-        loja =LojaModel(nome_fantasia, **dados )
 
-        try:
-            loja.salvar_loja()
-        except:
-            return {"Ocorreu um erro interno"}, 500
-        return loja.json(), 201
-
-    def delete(self, nome_fantasia):
-        loja = LojaModel.buscar_lojas(nome_fantasia)
+    def delete(self, loja_id):
+        loja = LojaModel.buscar_loja_por_id(loja_id)
         if loja:
             try:
                 loja.deletar_loja()
@@ -67,17 +67,19 @@ class LojaCadastro(Resource):
         dados = argumentos.parse_args()
         hash = generate_password_hash(dados['senha'])
 
-        if LojaModel.buscar_lojas(dados['nome_fantasia']):
-            return {"mensagem":"Loja '{}' já existente !".format(dados['nome_fantasia'])}, 404
+        if LojaModel.buscar_loja_por_email(dados['email']):
+            return {"mensagem":"Loja '{}' já existente !".format(dados['email'])}, 401
 
         loja = LojaModel(**dados)
         try:
             loja.hash_senha_loja(dados['senha'])
             loja.salvar_loja()
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=loja.loja_id, expires_delta= expires)
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar loja.'}, 500
-        return loja.json()
+        return  (token_de_acesso, loja.loja_id), 201
 
 class LojaLogin(Resource):
     
@@ -89,11 +91,12 @@ class LojaLogin(Resource):
         dados = atributos.parse_args()
 
         loja = LojaModel.buscar_loja_por_email(dados['email'])
-
+        
         if loja and safe_str_cmp and check_password_hash(loja.senha, dados['senha']):
-            token_de_acesso = create_access_token(identity=loja.loja_id)
-            return {'token de acesso': token_de_acesso}, 200
-        return {'mensagem': 'Usuário ou senha incorreto.'}, 401
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=loja.loja_id, expires_delta= expires)
+            return  (token_de_acesso, loja.loja_id), 200
+        return {'mensagem': 'Credenciais incorretas.'}, 401
 
 class LojaLogout(Resource):
     
