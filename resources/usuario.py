@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
@@ -79,7 +80,8 @@ class UsuarioCadastro(Resource):
         try:
             usuario.hash_senha(dados['senha'])
             usuario.salvar_usuario()
-            token_de_acesso = create_access_token(identity=usuario.usuario_id)
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=usuario.usuario_id, expires_delta=expires)
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
