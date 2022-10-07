@@ -66,17 +66,18 @@ class LojaCadastro(Resource):
         dados = argumentos.parse_args()
         hash = generate_password_hash(dados['senha'])
 
-        if LojaModel.buscar_lojas(dados['nome_fantasia']):
-            return {"mensagem":"Loja '{}' já existente !".format(dados['nome_fantasia'])}, 401
+        if LojaModel.buscar_loja_por_email(dados['email']):
+            return {"mensagem":"Loja '{}' já existente !".format(dados['email'])}, 401
 
         loja = LojaModel(**dados)
         try:
             loja.hash_senha_loja(dados['senha'])
             loja.salvar_loja()
+            token_de_acesso = create_access_token(identity=loja.loja_id)
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar loja.'}, 500
-        return loja.json()
+        return  (token_de_acesso, loja.loja_id), 201
 
 class LojaLogin(Resource):
     
@@ -91,7 +92,7 @@ class LojaLogin(Resource):
         
         if loja and safe_str_cmp and check_password_hash(loja.senha, dados['senha']):
             token_de_acesso = create_access_token(identity=loja.loja_id)
-            return {'token de acesso': token_de_acesso}, 200
+            return  (token_de_acesso, loja.loja_id), 200
         return {'mensagem': 'Credenciais incorretas.'}, 401
 
 class LojaLogout(Resource):

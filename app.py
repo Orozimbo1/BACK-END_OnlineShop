@@ -1,3 +1,5 @@
+import dotenv
+import os
 from sql_alquemy import engine
 from flask_cors import CORS
 from flask import Flask, jsonify
@@ -14,7 +16,7 @@ from resources.produto_atributos.estilo import Estilos, Estilo, EstiloCadastro
 from resources.produto_atributos.genero import Generos, Genero, GeneroCadastro
 from resources.produto_atributos.imagens_produto import ImagensProdutos, ImagemProduto, ImagemProdutoCadastro
 from resources.produto_atributos.secao import Secoes, Secao, SecaoCadastro
-from resources.produto import Produtos, Produto, ProdutoCadastro
+from resources.produto import Produtos, Produto, ProdutoCadastro, ProdutoFiltro
 from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 from resources.loja_atributos.cep import CepLojas, CepLoja, CepLojaCadastro
 from resources.loja_atributos.contato import ContatoLojas, ContatoLoja, ContatoLojaCadastro
@@ -23,10 +25,12 @@ from resources.usuario_atributos.contato import ContatoUsuarios, ContatoUsuario,
 
 app = Flask(__name__)
 
+dotenv.load_dotenv(dotenv.find_dotenv())
+
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = engine
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'asdfghjklç'
+app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLE'] = True
 api = Api(app)
 jwt = JWTManager(app)
@@ -92,6 +96,7 @@ api.add_resource(FormaPagamentoCadastro, '/forma-de-pagamento/cadastro')
 
 api.add_resource(Produtos, '/produtos')
 api.add_resource(Produto, '/produto/<int:produto_id>')
+api.add_resource(ProdutoFiltro, '/produto-filtro/<int:genero_produto_id>')
 api.add_resource(ProdutoCadastro, '/produto/cadastro')
 api.add_resource(Categorias, '/categorias')
 api.add_resource(Categoria, '/categoria/<int:categoria_produto_id>')

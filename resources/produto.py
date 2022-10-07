@@ -73,3 +73,9 @@ class ProdutoCadastro(Resource):
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return produto.json()
         return {"mensagem": "Essa loja não existe. Por favor insira um 'id' válido."}
+
+class ProdutoFiltro(Resource):
+    def get(self, genero_produto_id):
+
+        produtos = ProdutoModel.buscar_produtos_filtro(genero_produto_id)
+        return produtos

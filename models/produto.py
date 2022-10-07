@@ -8,6 +8,7 @@ from models.produto_atributos.categoria import CategoriaProdutoModel
 from models.produto_atributos.estilo import EstiloProdutoModel
 
 
+
 class ProdutoModel(Base):
     __tablename__ = 'produtos' 
 
@@ -54,6 +55,12 @@ class ProdutoModel(Base):
             'tamanho_produto':self.tamanho_produto,
             'valor': self.valor
         }
+
+    @classmethod
+    def buscar_produtos_filtro(cls, genero_produto_id):
+        resultado = session.query(ProdutoModel).filter_by(genero_produto_id=genero_produto_id)
+        produtos = [produto.json() for produto in resultado]
+        return produtos
 
     @classmethod
     def buscar_todos_produtos(cls):
