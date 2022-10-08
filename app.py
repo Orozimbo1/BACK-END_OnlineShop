@@ -25,6 +25,8 @@ from resources.usuario_atributos.contato import ContatoUsuarios, ContatoUsuario,
 
 app = Flask(__name__)
 
+server = app.server
+
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 CORS(app)
