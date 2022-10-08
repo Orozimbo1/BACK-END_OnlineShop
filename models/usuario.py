@@ -10,6 +10,7 @@ class UsuarioModel(Base):
     __tablename__ = 'usuarios'
 
     usuario_id = Column(Integer, primary_key=True)
+    img_perfil_usuario = Column(String)
     nome = Column(String(80))
     sobrenome = Column(String(80))
     email = Column(String(40))
@@ -20,7 +21,8 @@ class UsuarioModel(Base):
     compras = relationship('VendaModel', backref="usuarios")
     
 
-    def __init__(self, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
+    def __init__(self,img_perfil_usuario, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
+        self.img_perfil_usuario = img_perfil_usuario
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
@@ -32,6 +34,7 @@ class UsuarioModel(Base):
     def json(self):
         return {
             'usuario_id': self.usuario_id,
+            'img_perfil_usuario': self.img_perfil_usuario,
             'nome': self.nome,
             'sobrenome': self.sobrenome,
             'email': self.email,
@@ -79,7 +82,8 @@ class UsuarioModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_usuario(self, nome, sobrenome, email, CPF, contato_usuario_id, endereco_usuario_id):
+    def atualizar_usuario(self, img_perfil_usuario, nome, sobrenome, email, CPF, contato_usuario_id, endereco_usuario_id):
+        self.img_perfil_usuario = img_perfil_usuario
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email

@@ -9,6 +9,7 @@ from blacklist import BLACKLIST
 
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('img_perfil_loja', type=str)
 argumentos.add_argument('nome_fantasia', type=str, required=True, help= " O campo 'Nome Fantasia' precisa ser preenchido")
 argumentos.add_argument('email', type=str, required=True, help= "O campo 'e-mail' precisa ser preenchido")
 argumentos.add_argument('senha', type=str, required=True, help= "O campo 'senha' precisa ser preenchido]")

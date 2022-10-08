@@ -8,6 +8,7 @@ from models.usuario import UsuarioModel
 
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('img_perfil_usuario', type=str)
 argumentos.add_argument('nome', type=str, required=True, help="O campo 'nome' não pode ser deixado em branco.")
 argumentos.add_argument('sobrenome', type=str, required=True, help="O campo 'sobrenome' não pode ser deixado em branco.")
 argumentos.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
@@ -31,7 +32,7 @@ class Usuario(Resource):
             return usuario.json()
         return {'mensagem': 'Usuário  não encontrado.'}, 404
 
-    @jwt_required()
+    # @jwt_required()
     def put(self, usuario_id):
         
         atributos = reqparse.RequestParser()
@@ -53,7 +54,7 @@ class Usuario(Resource):
                 return {'mensagem': 'Houve um erro tentando atualizar o usuário.'}, 500
             return usuario_encontrado.json(), 200
 
-    @jwt_required()
+    # @jwt_required()
     def delete(self, usuario_id):
         usuario = UsuarioModel.buscar_usuario(usuario_id)
 
@@ -106,7 +107,7 @@ class UsuarioLogin(Resource):
 
 class UsuarioLogout(Resource):
     
-    @jwt_required()
+    # @jwt_required()
     def post(self):
         jwt_id = get_jwt()['jti']
         BLACKLIST.add(jwt_id)
