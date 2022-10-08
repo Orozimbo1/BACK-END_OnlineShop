@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
-engine = sqlalchemy.create_engine('postgresql://{}:{}@{}:{}/{}'.format(os.getenv("usuario"),os.getenv("senha"),os.getenv("host"),os.getenv("port"), os.getenv("db")))
+engine = sqlalchemy.create_engine(os.getenv("DATABASE_URL"))
 Base = declarative_base()
 
 Session = sessionmaker(bind=engine)
