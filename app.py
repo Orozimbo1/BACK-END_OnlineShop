@@ -45,7 +45,7 @@ def token_de_acesso_invalidado(jwt_header, jwt_payload):
 
 @app.route('/')
 def hello():
-    return 'Hello world'
+    return '<h1>Hello World!</h1>'
 
 ## ROTAS DOS USUARIOS
 
