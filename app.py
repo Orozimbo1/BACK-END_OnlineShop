@@ -1,5 +1,6 @@
 import dotenv
 import os
+import urwid
 from sql_alquemy import engine
 from flask_cors import CORS
 from flask import Flask, jsonify
