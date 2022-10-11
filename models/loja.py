@@ -1,6 +1,9 @@
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash
+from models.loja_atributos.contato import ContatoLojaModel
+from models.loja_atributos.cep import CepLojaModel
 
 class LojaModel(Base):
     __tablename__ = 'lojas'
@@ -8,29 +11,19 @@ class LojaModel(Base):
     loja_id = Column(Integer, primary_key=True)
     nome_fantasia = Column(String(40))
     email = Column (String(100))
-    senha = Column(String(40))
+    senha = Column(String(200))
     CNPJ = Column(String(20))
-    telefone = Column(String(20))
-    CEP = Column(String(10))
-    cidade = Column(String(40)) 
-    logradouro = Column(String(40))
-    rua = Column(String(80))
-    numero = Column(Integer)
+    contato_loja_id = Column(Integer, ForeignKey(ContatoLojaModel.contato_loja_id))
+    endereco_loja_id = Column(Integer, ForeignKey(CepLojaModel.endereco_loja_id))
     produtos = relationship('ProdutoModel', backref="lojas")
-    vendas = relationship('VendaModel', backref="lojas")
 
-    def __init__(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
+    def __init__(self, nome_fantasia, email, senha, CNPJ, contato_loja_id, endereco_loja_id):
         self.nome_fantasia = nome_fantasia
         self.email = email
         self.senha = senha
         self.CNPJ = CNPJ
-        self.telefone = telefone
-        self.CEP = CEP
-        self.cidade = cidade
-        self.logradouro = logradouro
-        self.rua = rua
-        self.numero = numero
-        
+        self.contato_loja_id = contato_loja_id
+        self.endereco_loja_id = endereco_loja_id  
     
     def json(self):
         return {
@@ -38,14 +31,8 @@ class LojaModel(Base):
             'nome_fantasia': self.nome_fantasia,
             'email': self.email,
             'CNPJ': self.CNPJ,
-            'telefone': self.telefone,
-            'CEP': self.CEP,
-            'cidade': self.cidade,
-            'logradouro': self.logradouro,
-            'rua': self.rua,
-            'numero': self.numero,
-            'produtos': [produto.json() for produto in self.produtos],
-            'vendas': [venda.json() for venda in self.vendas]
+            'contato_loja_id': self.contato_loja_id,
+            'endereco_loja_id': self.endereco_loja_id
         }
 
     @classmethod
@@ -55,9 +42,8 @@ class LojaModel(Base):
         return lojas
 
     @classmethod
-    def buscar_lojas(cls, nome_fantasia):
-        loja = session.query(LojaModel).filter_by(nome_fantasia=nome_fantasia).first()
-
+    def buscar_loja_por_email(cls, email):
+        loja= session.query(LojaModel).filter_by(email=email).first()
         if loja:
             return loja
         return False
@@ -69,23 +55,22 @@ class LojaModel(Base):
         if loja:
             return loja
         return False
+    
+    def hash_senha_loja(self, senha):
+        hash = generate_password_hash(senha)
+        self.senha = hash
 
     
     def salvar_loja(self):
         session.add(self)
         session.commit()
 
-    def atualizar_loja(self, nome_fantasia, email, senha, CNPJ, telefone, CEP, cidade, logradouro, rua, numero):
+    def atualizar_loja(self, nome_fantasia, email, CNPJ, contato_loja_id, endereco_loja_id):
         self.nome_fantasia = nome_fantasia
         self.email = email
-        self.senha = senha
         self.CNPJ = CNPJ
-        self.telefone = telefone
-        self.CEP = CEP
-        self.cidade = cidade
-        self.logradouro = logradouro
-        self.rua = rua
-        self.numero = numero
+        self.contato_loja_id = contato_loja_id
+        self.endereco_loja_id = endereco_loja_id
 
     def deletar_loja(self):
         [produto.deletar_produto() for produto in self.produtos]

@@ -1,21 +1,19 @@
+from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
-from werkzeug.security import safe_str_cmp
+from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 from blacklist import BLACKLIST
 from models.usuario import UsuarioModel
+
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('nome', type=str, required=True, help="O campo 'nome' não pode ser deixado em branco.")
 argumentos.add_argument('sobrenome', type=str, required=True, help="O campo 'sobrenome' não pode ser deixado em branco.")
 argumentos.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
 argumentos.add_argument('senha', type=str, required=True, help="O campo 'senha' não pode ser deixado em branco.")
-argumentos.add_argument('telefone', type=str)
 argumentos.add_argument('CPF', type=str)
-argumentos.add_argument('CEP', type=str)
-argumentos.add_argument('cidade', type=str)
-argumentos.add_argument('logradouro', type=str)
-argumentos.add_argument('rua', type=str)
-argumentos.add_argument('numero', type=int)
+argumentos.add_argument('contato_usuario_id', type=int)
+argumentos.add_argument('endereco_usuario_id', type=int)
 
 class Usuarios(Resource):
 
@@ -35,20 +33,24 @@ class Usuario(Resource):
     # @jwt_required()
     def put(self, usuario_id):
         
-        dados = argumentos.parse_args()
+        atributos = reqparse.RequestParser()
+        atributos.add_argument('nome', type=str)
+        atributos.add_argument('sobrenome', type=str)
+        atributos.add_argument('email', type=str)
+        atributos.add_argument('CPF', type=str)
+        atributos.add_argument('contato_usuario_id', type=int)
+        atributos.add_argument('endereco_usuario_id', type=int)
+        data = atributos.parse_args()
 
         usuario_encontrado = UsuarioModel.buscar_usuario(usuario_id)
         if usuario_encontrado:
-            usuario_encontrado.atualizar_usuario(**dados)
-            usuario_encontrado.salvar_usuario()
+            try:
+                usuario_encontrado.atualizar_usuario(**data)
+                print("aooba")
+                usuario_encontrado.salvar_usuario()
+            except:
+                return {'mensagem': 'Houve um erro tentando atualizar o usuário.'}, 500
             return usuario_encontrado.json(), 200
-
-        usuario = UsuarioModel(usuario_id, **dados)
-        try:
-            usuario.salvar_usuario()
-        except:
-            return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
-        return usuario.json(), 201
 
     # @jwt_required()
     def delete(self, usuario_id):
@@ -66,15 +68,19 @@ class UsuarioCadastro(Resource):
 
     def post(self):
 
-        dados =argumentos.parse_args()
+        dados = argumentos.parse_args()
+        hash = generate_password_hash(dados['senha'])
+        
 
         if UsuarioModel.buscar_email_usuario(dados['email']):
             return {"mensagem": "Email '{}' já cadastrado".format(dados['email'])}, 404
 
         usuario = UsuarioModel(**dados)
         try:
+            usuario.hash_senha(dados['senha'])
             usuario.salvar_usuario()
-        except:
+        except Exception as e:
+            print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
         return usuario.json()
 
@@ -89,7 +95,7 @@ class UsuarioLogin(Resource):
 
         usuario = UsuarioModel.buscar_email_usuario(dados['email'])
 
-        if usuario and safe_str_cmp(usuario.senha, dados['senha']):
+        if usuario and safe_str_cmp and check_password_hash(usuario.senha, dados['senha']):
             token_de_acesso = create_access_token(identity=usuario.usuario_id)
             return {'token de acesso': token_de_acesso}, 200
         return {'mensagem': 'Usuário ou senha incorreto.'}, 401
