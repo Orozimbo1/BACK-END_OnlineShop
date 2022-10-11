@@ -30,7 +30,7 @@ dotenv.load_dotenv(dotenv.find_dotenv())
 
 CORS(app)
 print(os.environ.get('DATABASE_URL'))
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://fbweefymqxihya:83e3c84c8d71837369dfb8aedc40a39aad0a00e73011e5b43e380e4f094803ab@ec2-44-210-228-110.compute-1.amazonaws.com:5432/d3i3329k5l69u8"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLE'] = True
