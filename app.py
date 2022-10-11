@@ -29,7 +29,7 @@ app = Flask(__name__)
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = engine
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace("://", "ql://", 1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLE'] = True
