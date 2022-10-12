@@ -47,7 +47,6 @@ class VendaProdCadastro(Resource):
         if produto:
             qtd_estoque = produto.qtd_estoque - dados.get('qtd_produtos')
             try:
-                print(produto.json())
                 if qtd_estoque >=0:
                     produto.atualizar_qtd_produto(qtd_estoque)
                     venda_prod.salvar_venda_prod()

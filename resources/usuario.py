@@ -1,3 +1,4 @@
+from datetime import  timedelta
 from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
@@ -7,6 +8,7 @@ from models.usuario import UsuarioModel
 
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('img_perfil_usuario', type=str)
 argumentos.add_argument('nome', type=str, required=True, help="O campo 'nome' não pode ser deixado em branco.")
 argumentos.add_argument('sobrenome', type=str, required=True, help="O campo 'sobrenome' não pode ser deixado em branco.")
 argumentos.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
@@ -79,10 +81,12 @@ class UsuarioCadastro(Resource):
         try:
             usuario.hash_senha(dados['senha'])
             usuario.salvar_usuario()
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=usuario.usuario_id, expires_delta=expires)
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
-        return usuario.json()
+        return (token_de_acesso, usuario.usuario_id), 201
 
 class UsuarioLogin(Resource):
     
@@ -96,8 +100,9 @@ class UsuarioLogin(Resource):
         usuario = UsuarioModel.buscar_email_usuario(dados['email'])
 
         if usuario and safe_str_cmp and check_password_hash(usuario.senha, dados['senha']):
-            token_de_acesso = create_access_token(identity=usuario.usuario_id)
-            return {'token de acesso': token_de_acesso}, 200
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=usuario.usuario_id, expires_delta=expires)
+            return (token_de_acesso, usuario.usuario_id), 200
         return {'mensagem': 'Usuário ou senha incorreto.'}, 401
 
 class UsuarioLogout(Resource):

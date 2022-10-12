@@ -1,3 +1,4 @@
+from datetime import  timedelta
 from flask_restful import Resource, reqparse
 from sqlalchemy import null
 from models.loja import LojaModel
@@ -8,6 +9,7 @@ from blacklist import BLACKLIST
 
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('img_perfil_loja', type=str)
 argumentos.add_argument('nome_fantasia', type=str, required=True, help= " O campo 'Nome Fantasia' precisa ser preenchido")
 argumentos.add_argument('email', type=str, required=True, help= "O campo 'e-mail' precisa ser preenchido")
 argumentos.add_argument('senha', type=str, required=True, help= "O campo 'senha' precisa ser preenchido]")
@@ -66,17 +68,19 @@ class LojaCadastro(Resource):
         dados = argumentos.parse_args()
         hash = generate_password_hash(dados['senha'])
 
-        if LojaModel.buscar_lojas(dados['nome_fantasia']):
-            return {"mensagem":"Loja '{}' já existente !".format(dados['nome_fantasia'])}, 401
+        if LojaModel.buscar_loja_por_email(dados['email']):
+            return {"mensagem":"Loja '{}' já existente !".format(dados['email'])}, 401
 
         loja = LojaModel(**dados)
         try:
             loja.hash_senha_loja(dados['senha'])
             loja.salvar_loja()
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=loja.loja_id, expires_delta= expires)
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar loja.'}, 500
-        return loja.json()
+        return  (token_de_acesso, loja.loja_id), 201
 
 class LojaLogin(Resource):
     
@@ -90,8 +94,9 @@ class LojaLogin(Resource):
         loja = LojaModel.buscar_loja_por_email(dados['email'])
         
         if loja and safe_str_cmp and check_password_hash(loja.senha, dados['senha']):
-            token_de_acesso = create_access_token(identity=loja.loja_id)
-            return {'token de acesso': token_de_acesso}, 200
+            expires = timedelta(days=10)
+            token_de_acesso = create_access_token(identity=loja.loja_id, expires_delta= expires)
+            return  (token_de_acesso, loja.loja_id), 200
         return {'mensagem': 'Credenciais incorretas.'}, 401
 
 class LojaLogout(Resource):

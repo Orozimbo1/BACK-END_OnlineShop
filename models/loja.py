@@ -9,6 +9,7 @@ class LojaModel(Base):
     __tablename__ = 'lojas'
 
     loja_id = Column(Integer, primary_key=True)
+    img_perfil_loja = Column(String)
     nome_fantasia = Column(String(40))
     email = Column (String(100))
     senha = Column(String(200))
@@ -28,6 +29,7 @@ class LojaModel(Base):
     def json(self):
         return {
             'loja_id': self.loja_id,
+            'img_perfil_loja': self.img_perfil_loja,
             'nome_fantasia': self.nome_fantasia,
             'email': self.email,
             'CNPJ': self.CNPJ,

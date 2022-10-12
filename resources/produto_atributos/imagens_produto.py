@@ -25,7 +25,7 @@ class ImagemProduto(Resource):
 
 
     def delete(self, imagem_produto_id):
-        imagem_produto = ImagemProdutoModel.buscar_imagens_produto(imagem_produto_id)
+        imagem_produto = ImagemProdutoModel.buscar_imagem(imagem_produto_id)
         if imagem_produto:
             try:
                 imagem_produto.deletar_imagem()

@@ -10,6 +10,7 @@ class UsuarioModel(Base):
     __tablename__ = 'usuarios'
 
     usuario_id = Column(Integer, primary_key=True)
+    img_perfil_usuario = Column(String)
     nome = Column(String(80))
     sobrenome = Column(String(80))
     email = Column(String(40))
@@ -32,6 +33,7 @@ class UsuarioModel(Base):
     def json(self):
         return {
             'usuario_id': self.usuario_id,
+            'img_perfil_usuario': self.img_perfil_usuario,
             'nome': self.nome,
             'sobrenome': self.sobrenome,
             'email': self.email,

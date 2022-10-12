@@ -56,6 +56,12 @@ class ProdutoModel(Base):
         }
 
     @classmethod
+    def buscar_produtos_filtro(cls, genero_produto_id):
+        resultado = session.query(ProdutoModel).filter_by(genero_produto_id=genero_produto_id)
+        produtos = [produto.json() for produto in resultado]
+        return produtos
+
+    @classmethod
     def buscar_todos_produtos(cls):
         resultado = session.query(ProdutoModel).all()
         produtos = [produto.json() for produto in resultado]

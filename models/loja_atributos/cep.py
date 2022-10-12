@@ -44,8 +44,12 @@ class CepLojaModel(Base):
             return endereco
         return False
 
+
     def atualizar_endereco(self, local_endereco, CEP, cidade, logradouro, rua, numero):
         self.local_endereco = local_endereco
+
+    def atualizar_endereco(self, CEP, cidade, logradouro, rua, numero):
+
         self.CEP = CEP
         self.cidade = cidade
         self.logradouro = logradouro

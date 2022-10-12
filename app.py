@@ -1,3 +1,6 @@
+import dotenv
+import os
+import urwid
 from sql_alquemy import engine
 from flask_cors import CORS , cross_origin
 from flask import Flask, jsonify
@@ -14,7 +17,7 @@ from resources.produto_atributos.estilo import Estilos, Estilo, EstiloCadastro
 from resources.produto_atributos.genero import Generos, Genero, GeneroCadastro
 from resources.produto_atributos.imagens_produto import ImagensProdutos, ImagemProduto, ImagemProdutoCadastro
 from resources.produto_atributos.secao import Secoes, Secao, SecaoCadastro
-from resources.produto import Produtos, Produto, ProdutoCadastro
+from resources.produto import Produtos, Produto, ProdutoCadastro, ProdutoFiltro
 from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
 from resources.loja_atributos.cep import CepLojas, CepLoja, CepLojaCadastro
 from resources.loja_atributos.contato import ContatoLojas, ContatoLoja, ContatoLojaCadastro
@@ -23,15 +26,13 @@ from resources.usuario_atributos.contato import ContatoUsuarios, ContatoUsuario,
 
 app = Flask(__name__)
 
+
 CORS(app,supports_credentials=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = engine
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'asdfghjklç'
-app.config['JWT_BLACKLIST_ENABLE'] = True
+
+dotenv.load_dotenv(dotenv.find_dotenv())
 api = Api(app)
 jwt = JWTManager(app)
 
-@app.route("/")
 @cross_origin(origin='*')
 def sucess():
   return jsonify({'success': 'ok'})
@@ -45,7 +46,6 @@ def verifica_blacklist(self, token):
 @jwt.revoked_token_loader
 def token_de_acesso_invalidado(jwt_header, jwt_payload):
     return jsonify({'mensagem': 'Voçê já se deslogou.'}), 401
-
 
 
 ## ROTAS DOS USUARIOS
