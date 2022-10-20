@@ -16,12 +16,13 @@ class VendaModel(Base):
     data = Column(String(200))
     produtos = relationship('VendaProdModel', backref='vendas')
 
-    def __init__(self, usuario_id, pagamento_id, frete_id, total, total_pago):
+    def __init__(self, usuario_id, pagamento_id, frete_id, total, total_pago, data):
         self.usuario_id = usuario_id
         self.pagamento_id = pagamento_id
         self.frete_id = frete_id
         self.total = total
         self.total_pago = total_pago
+        self.data = data
 
     def json(self):
         return {
