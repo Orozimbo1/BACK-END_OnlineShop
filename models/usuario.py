@@ -43,8 +43,7 @@ class UsuarioModel(Base):
             'endereco_usuario_id': self.endereco_usuario_id,
             'compras': [compra.json() for compra in self.compras]
         }
-
-    # Ver se pode apagar!!!
+        
     def jsonLogin(self):
         return {
             'usuario_id': self.usuario_id,
