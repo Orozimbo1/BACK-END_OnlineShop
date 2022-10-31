@@ -1,6 +1,6 @@
 import dotenv
 import os
-from sql_alquemy import engine
+from database import engine
 from flask_cors import CORS
 from flask import Flask, jsonify
 from flask_restful import Api

@@ -1,4 +1,4 @@
-from sql_alquemy import Base, engine, session
+from database import Base, engine, session
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models.loja import LojaModel
