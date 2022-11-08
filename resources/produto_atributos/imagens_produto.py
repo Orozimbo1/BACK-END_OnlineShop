@@ -34,6 +34,18 @@ class ImagemProduto(Resource):
             return{"mensagem": "A imagem do produto foi deletada com sucesso"}
         return{"mensagem":"A imagem do produto não foi encontrada."}
 
+    def put(self,imagem_produto_id):
+            dados = argumentos.parse_args()
+
+            imagem_produto = ImagemProdutoModel.buscar_imagem(imagem_produto_id)
+            if imagem_produto:
+                try:
+                    imagem_produto.atualizar_imagem(**dados)
+                    imagem_produto.salvar_imagem()
+                except:
+                    return {"mensagem": "Ocorreu um erro interno"},500
+                return{"mensagem": "Imagem atualizada com sucesso"},200
+            return {"mensagem":"Imagem não encontrada"},404
 class ImagemProdutoCadastro(Resource):
 
     def post(self):
