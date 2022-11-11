@@ -8,7 +8,6 @@ from models.produto_atributos.categoria import CategoriaProdutoModel
 from models.produto_atributos.estilo import EstiloProdutoModel
 
 
-
 class ProdutoModel(Base):
     __tablename__ = 'produtos' 
 

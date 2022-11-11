@@ -21,8 +21,7 @@ class UsuarioModel(Base):
     compras = relationship('VendaModel', backref="usuarios")
     
 
-    def __init__(self,img_perfil_usuario, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
-        self.img_perfil_usuario = img_perfil_usuario
+    def __init__(self, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
@@ -81,8 +80,7 @@ class UsuarioModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_usuario(self, img_perfil_usuario, nome, sobrenome, email, CPF, contato_usuario_id, endereco_usuario_id):
-        self.img_perfil_usuario = img_perfil_usuario
+    def atualizar_usuario(self, nome, sobrenome, email, CPF, contato_usuario_id, endereco_usuario_id):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email

@@ -1,6 +1,6 @@
 from tokenize import String
 from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey,update
 from models.produto import ProdutoModel
 
 class ImagemProdutoModel(Base):
@@ -45,5 +45,10 @@ class ImagemProdutoModel(Base):
     def deletar_imagem(self):
         session.delete(self)
         session.commit()
-
+    
+    def atualizar_imagem(self,url_imagem):
+        self.url_imagem = url_imagem
+        
+    
+        
 Base.metadata.create_all(engine)

@@ -31,7 +31,7 @@ class Venda(Resource):
         venda = VendaModel.buscar_venda(venda_id)
         if venda:
             try:
-                venda.deletar_venda()
+                VendaModel.deletar_venda()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return{"mensagem": "A venda foi deletada com sucesso"}
