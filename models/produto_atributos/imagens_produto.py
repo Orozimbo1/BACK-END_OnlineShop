@@ -46,9 +46,10 @@ class ImagemProdutoModel(Base):
         session.delete(self)
         session.commit()
     
-    def atualizar_imagem(self,url_imagem):
+    def atualizar_imagem_produto(self, url_imagem, descricao_imagem, produto_id):
         self.url_imagem = url_imagem
-        
+        self.descricao_imagem = descricao_imagem
+        self.produto_id = produto_id
     
         
 Base.metadata.create_all(engine)
