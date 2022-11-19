@@ -35,7 +35,7 @@ class LojaModel(Base):
             'CNPJ': self.CNPJ,
             'contato_loja_id': self.contato_loja_id,
             'endereco_loja_id': self.endereco_loja_id,
-            
+            'produtos': [produto.json() for produto in self.produtos]
         }
 
     @classmethod
