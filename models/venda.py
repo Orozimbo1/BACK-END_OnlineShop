@@ -1,5 +1,5 @@
-from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, Float
+from database import Base, engine, session
+from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, Float, String
 from sqlalchemy.orm import relationship
 from models.venda_atributos.pagamento import PagamentoModel
 from models.venda_atributos.frete import FreteModel

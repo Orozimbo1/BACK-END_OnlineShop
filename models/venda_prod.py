@@ -1,4 +1,4 @@
-from sql_alquemy import Base, engine, session
+from database import Base, engine, session
 from sqlalchemy import Column, Integer, ForeignKey, Float
 from models.venda import VendaModel
 

@@ -1,5 +1,5 @@
 from tokenize import String
-from sql_alquemy import Base, engine, session
+from database import Base, engine, session
 from sqlalchemy import Column, Integer, String
 
 class SecaoProdutoModel(Base):

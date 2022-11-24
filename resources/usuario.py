@@ -21,7 +21,7 @@ class Usuarios(Resource):
 
     def get(self):
         usuarios = UsuarioModel.buscar_todos_usuarios()
-        return usuarios
+        return usuarios 
 
 class Usuario(Resource):
 

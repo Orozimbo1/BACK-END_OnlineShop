@@ -1,6 +1,6 @@
 from tokenize import String
-from sql_alquemy import Base, engine, session
-from sqlalchemy import Column, Integer, String, ForeignKey,update
+from database import Base, engine, session
+from sqlalchemy import Column, Integer, String, ForeignKey
 from models.produto import ProdutoModel
 
 class ImagemProdutoModel(Base):
