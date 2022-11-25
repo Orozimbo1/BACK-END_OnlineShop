@@ -1,7 +1,7 @@
 import dotenv
 import os
 from sql_alquemy import engine
-from flask_cors import CORS
+from flask_cors import CORS , cross_origin
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
@@ -25,15 +25,18 @@ from resources.usuario_atributos.contato import ContatoUsuarios, ContatoUsuario,
 
 app = Flask(__name__)
 
-dotenv.load_dotenv(dotenv.find_dotenv())
 
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = engine
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['JWT_BLACKLIST_ENABLE'] = True
+CORS(app,supports_credentials=True)
+
+dotenv.load_dotenv(dotenv.find_dotenv())
 api = Api(app)
 jwt = JWTManager(app)
+
+@cross_origin(origin='*')
+def sucess():
+  return jsonify({'success': 'ok'})
+
+
 
 @jwt.token_in_blocklist_loader
 def verifica_blacklist(self, token):
@@ -43,9 +46,6 @@ def verifica_blacklist(self, token):
 def token_de_acesso_invalidado(jwt_header, jwt_payload):
     return jsonify({'mensagem': 'Voçê já se deslogou.'}), 401
 
-@app.route('/')
-def hello():
-    return '<h1>Hello meu World!</h1>'
 
 ## ROTAS DOS USUARIOS
 
@@ -96,8 +96,8 @@ api.add_resource(FormaPagamentoCadastro, '/forma-de-pagamento/cadastro')
 
 api.add_resource(Produtos, '/produtos')
 api.add_resource(Produto, '/produto/<int:produto_id>')
-api.add_resource(ProdutoFiltro, '/produto-filtro/<int:genero_produto_id>')
 api.add_resource(ProdutoCadastro, '/produto/cadastro')
+api.add_resource(ProdutoFiltro, '/produto-filtro/<int:genero_produto_id>')
 api.add_resource(Categorias, '/categorias')
 api.add_resource(Categoria, '/categoria/<int:categoria_produto_id>')
 api.add_resource(CategoriaCadastro, '/categoria/cadastro')

@@ -1,4 +1,4 @@
-from sql_alquemy import Base, engine, session
+from database import Base, engine, session
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models.loja import LojaModel
@@ -6,7 +6,6 @@ from models.produto_atributos.secao import SecaoProdutoModel
 from models.produto_atributos.genero import GeneroProdutoModel
 from models.produto_atributos.categoria import CategoriaProdutoModel
 from models.produto_atributos.estilo import EstiloProdutoModel
-
 
 
 class ProdutoModel(Base):

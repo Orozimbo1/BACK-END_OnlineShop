@@ -1,4 +1,4 @@
-from sql_alquemy import Base, engine, session
+from database import Base, engine, session
 from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, Float, String
 from sqlalchemy.orm import relationship
 from models.venda_atributos.pagamento import PagamentoModel
@@ -13,7 +13,7 @@ class VendaModel(Base):
     frete_id = Column(Integer, ForeignKey(FreteModel.frete_id))
     total = Column(Float(2))
     total_pago = Column(Float(2))
-    data = Column(String(200))
+    data = Column(TIMESTAMP)
     produtos = relationship('VendaProdModel', backref='vendas')
 
     def __init__(self, usuario_id, pagamento_id, frete_id, total, total_pago, data):
