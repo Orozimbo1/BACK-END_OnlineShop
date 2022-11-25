@@ -44,7 +44,7 @@ def verifica_blacklist(self, token):
 
 @jwt.revoked_token_loader
 def token_de_acesso_invalidado(jwt_header, jwt_payload):
-    return jsonify({'mensagem': 'Voçê já se deslogou.'}), 401
+    return jsonify({'mensagem': 'Você já se deslogou.'}), 401
 
 
 ## ROTAS DOS USUARIOS

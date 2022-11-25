@@ -10,3 +10,18 @@ Base = declarative_base()
 
 Session = sessionmaker(bind=engine)
 session = Session()
+
+
+# connection = psycopg2.connect(
+#     host ="onlineshop.cgvog13pctzv.us-east-1.rds.amazonaws.com",
+#     port= 5432,
+#     user="postgres",
+#     password="postgres",
+#     database="onlineshop"
+# )
+
+# connection.autocommit=True
+
+# cursor = connection.cursor()
+
+# connection.close()
