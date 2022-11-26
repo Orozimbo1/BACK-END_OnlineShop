@@ -18,7 +18,8 @@ class LojaModel(Base):
     endereco_loja_id = Column(Integer, ForeignKey(CepLojaModel.endereco_loja_id))
     produtos = relationship('ProdutoModel', backref="lojas")
 
-    def __init__(self, nome_fantasia, email, senha, CNPJ, contato_loja_id, endereco_loja_id):
+    def __init__(self, img_perfil_loja, nome_fantasia, email, senha, CNPJ, contato_loja_id, endereco_loja_id):
+        self.img_perfil_loja = img_perfil_loja
         self.nome_fantasia = nome_fantasia
         self.email = email
         self.senha = senha

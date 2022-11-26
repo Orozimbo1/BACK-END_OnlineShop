@@ -21,7 +21,8 @@ class UsuarioModel(Base):
     compras = relationship('VendaModel', backref="usuarios")
     
 
-    def __init__(self, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
+    def __init__(self, img_perfil_usuario, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
+        self.img_perfil_usuario = img_perfil_usuario
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email

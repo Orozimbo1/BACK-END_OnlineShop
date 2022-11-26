@@ -10,7 +10,7 @@ from models.usuario import UsuarioModel
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('img_perfil_usuario', type=str)
 argumentos.add_argument('nome', type=str, required=True, help="O campo 'nome' não pode ser deixado em branco.")
-argumentos.add_argument('sobrenome', type=str, required=True, help="O campo 'sobrenome' não pode ser deixado em branco.")
+argumentos.add_argument('sobrenome', type=str, help="O campo 'sobrenome' não pode ser deixado em branco.")
 argumentos.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
 argumentos.add_argument('senha', type=str, required=True, help="O campo 'senha' não pode ser deixado em branco.")
 argumentos.add_argument('CPF', type=str)
