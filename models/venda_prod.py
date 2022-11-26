@@ -1,13 +1,12 @@
 from database import Base, engine, session
 from sqlalchemy import Column, Integer, ForeignKey, Float
 from models.venda import VendaModel
-from models.produto import ProdutoModel
 
 class VendaProdModel(Base):
     __tablename__ = 'venda_prod'
 
     venda_prod_id = Column(Integer, primary_key=True)
-    produto_id = Column(Integer, ForeignKey(ProdutoModel.produto_id))
+    produto_id = Column(Integer, ForeignKey("produtos.produto_id"))
     qtd_produtos = Column(Integer)
     total = Column(Float(2))
     venda_id = Column(Integer, ForeignKey(VendaModel.venda_id))

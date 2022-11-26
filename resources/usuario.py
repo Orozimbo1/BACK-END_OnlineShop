@@ -86,7 +86,7 @@ class UsuarioCadastro(Resource):
         except Exception as e:
             print(str(e))
             return {'mensagem': 'Houve um erro tentando salvar o usuário.'}, 500
-        return (token_de_acesso, usuario.usuario_id), 201
+        return (token_de_acesso, usuario.json()), 201
 
 class UsuarioLogin(Resource):
     
@@ -102,7 +102,7 @@ class UsuarioLogin(Resource):
         if usuario and safe_str_cmp and check_password_hash(usuario.senha, dados['senha']):
             expires = timedelta(days=10)
             token_de_acesso = create_access_token(identity=usuario.usuario_id, expires_delta=expires)
-            return (token_de_acesso, usuario.usuario_id), 200
+            return (token_de_acesso, usuario.json()), 200
         return {'mensagem': 'Usuário ou senha incorreto.'}, 401
 
 class UsuarioLogout(Resource):

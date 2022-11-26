@@ -35,7 +35,8 @@ class LojaModel(Base):
             'email': self.email,
             'CNPJ': self.CNPJ,
             'contato_loja_id': self.contato_loja_id,
-            'endereco_loja_id': self.endereco_loja_id
+            'endereco_loja_id': self.endereco_loja_id,
+            'produtos': [produto.json() for produto in self.produtos]
         }
 
     @classmethod
@@ -68,8 +69,7 @@ class LojaModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_loja(self, img_perfil_loja, nome_fantasia, email, CNPJ, contato_loja_id, endereco_loja_id):
-        self.img_perfil_loja = img_perfil_loja
+    def atualizar_loja(self, nome_fantasia, email, CNPJ, contato_loja_id, endereco_loja_id):
         self.nome_fantasia = nome_fantasia
         self.email = email
         self.CNPJ = CNPJ

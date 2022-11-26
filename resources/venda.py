@@ -8,7 +8,7 @@ argumentos.add_argument('pagamento_id', type=int, help= "O campo 'pagamento_id' 
 argumentos.add_argument('frete_id', type=int, help= "O campo 'frete_id' precisa ser preenchido.")
 argumentos.add_argument('total', type=int, help= "O campo 'total' precisa ser preenchido.")
 argumentos.add_argument('total_pago', type=int, help= "O campo 'total_pago' precisa ser preenchido.")
-
+argumentos.add_argument('data', type=str, help= "O campo 'data' precisa ser preenchido.")
 
 class Vendas(Resource):
 
@@ -31,7 +31,7 @@ class Venda(Resource):
         venda = VendaModel.buscar_venda(venda_id)
         if venda:
             try:
-                venda.deletar_venda()
+                VendaModel.deletar_venda()
             except:
                 return {"mensagem":"Ocorreu um erro interno"}, 500
             return{"mensagem": "A venda foi deletada com sucesso"}
