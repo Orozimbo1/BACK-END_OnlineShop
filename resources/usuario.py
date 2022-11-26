@@ -1,5 +1,4 @@
 from datetime import  timedelta
-from distutils.log import error
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash

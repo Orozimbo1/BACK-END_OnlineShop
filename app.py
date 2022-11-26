@@ -45,9 +45,9 @@ def token_de_acesso_invalidado(jwt_header, jwt_payload):
 
 @app.route('/')
 def hello():
-    return 'Hello world'
+    return '<h1>Bem vindo à OnlineShop Marketplace</h1>'
 
-## ROTAS DOS USUARIOS
+# ROTAS DOS USUARIOS
 
 api.add_resource(Usuarios, '/usuarios')
 api.add_resource(Usuario, '/usuario/<int:usuario_id>')
@@ -62,7 +62,7 @@ api.add_resource(ContatoUsuario, '/usuario-contato/<int:contato_usuario_id>')
 api.add_resource(ContatoUsuarioCadastro, '/usuario-contato/cadastro')
 
 
-## ROTAS DAS LOJAS
+# ROTAS DAS LOJAS
 
 api.add_resource(Lojas, '/lojas')
 api.add_resource(Loja, '/loja/<int:loja_id>')
