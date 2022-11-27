@@ -5,12 +5,7 @@ from models.usuario_atributos.contato import ContatoUsuarioModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('celular', type=str)
-argumentos.add_argument('titular_celular')
-argumentos.add_argument('telefone_fixo')
-argumentos.add_argument('titular_telefone_fixo', type=str)
-argumentos.add_argument('instagram', type=str)
-argumentos.add_argument('facebook', type=str)
-argumentos.add_argument('linkedin', type=str)
+argumentos.add_argument('nome')
 
 class ContatoUsuarios(Resource):
 

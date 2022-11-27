@@ -6,16 +6,17 @@ class CepLojaModel(Base):
 
     endereco_loja_id = Column(Integer, primary_key=True)
     CEP = Column(String(10))
+    UF = Column(String(10))
     cidade = Column(String(40)) 
-    logradouro = Column(String(40))
+    bairro = Column(String(40))
     rua = Column(String(80))
     numero = Column(Integer)
 
-    def __init__(self, CEP, cidade, logradouro, rua, numero):
-        
+    def __init__(self, CEP, UF, cidade, bairro, rua, numero):
         self.CEP = CEP
+        self.UF = UF,
         self.cidade = cidade
-        self.logradouro = logradouro
+        self.bairro = bairro
         self.rua = rua
         self.numero = numero
         
@@ -24,8 +25,9 @@ class CepLojaModel(Base):
         return {
             'endereco_loja_id': self.endereco_loja_id,
             'CEP': self.CEP,
+            'UF': self.UF,
             'cidade': self.cidade,
-            'logradouro': self.logradouro,
+            'bairro': self.bairro,
             'rua': self.rua,
             'numero': self.numero
         }
@@ -45,16 +47,16 @@ class CepLojaModel(Base):
         return False
 
 
-    def atualizar_endereco(self, local_endereco, CEP, cidade, logradouro, rua, numero):
+    def atualizar_endereco(self, local_endereco, CEP, cidade, bairro, rua, numero):
         self.local_endereco = local_endereco
 
-    def atualizar_endereco(self, CEP, cidade, logradouro, rua, numero):
-
+    def atualizar_endereco(self, CEP, UF, cidade, bairro, rua, numero):
         self.CEP = CEP
+        self.UF = UF,
         self.cidade = cidade
-        self.logradouro = logradouro
+        self.bairro = bairro
         self.rua = rua
-        self.numero = numero  
+        self.numero = numero 
         
     def salvar_endereco(self):
         session.add(self)

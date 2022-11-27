@@ -5,18 +5,20 @@ class CepUsuarioModel(Base):
     __tablename__ = 'endereco_usuarios'
 
     endereco_usuario_id = Column(Integer, primary_key=True)
-    local_endereco = Column(String(255))
+    ponto_referencia = Column(String(255))
     CEP = Column(String(10))
+    UF = Column(String(10))
     cidade = Column(String(40)) 
-    logradouro = Column(String(40))
+    bairro = Column(String(40))
     rua = Column(String(80))
     numero = Column(Integer)
 
-    def __init__(self,local_endereco, CEP, cidade, logradouro, rua, numero):
-        self.local_endereco = local_endereco
+    def __init__(self, ponto_referencia, CEP, UF, cidade, bairro, rua, numero):
+        self.ponto_referencia = ponto_referencia
         self.CEP = CEP
+        self.UF = UF
         self.cidade = cidade
-        self.logradouro = logradouro
+        self.bairro = bairro
         self.rua = rua
         self.numero = numero
         
@@ -24,10 +26,11 @@ class CepUsuarioModel(Base):
     def json(self):
         return {
             'endereco_usuario_id': self.endereco_usuario_id,
-            'local_endereco': self.local_endereco,
+            'ponto_referencia': self.ponto_referencia,
             'CEP': self.CEP,
+            'UF': self.UF,
             'cidade': self.cidade,
-            'logradouro': self.logradouro,
+            'bairro': self.bairro,
             'rua': self.rua,
             'numero': self.numero
         }
@@ -46,13 +49,14 @@ class CepUsuarioModel(Base):
             return endereco
         return False
 
-    def atualizar_endereco(self, local_endereco, CEP, cidade, logradouro, rua, numero):
-        self.local_endereco = local_endereco
+    def atualizar_endereco(self, ponto_referencia, CEP, UF, cidade, bairro, rua, numero):
+        self.ponto_referencia = ponto_referencia
         self.CEP = CEP
+        self.UF = UF
         self.cidade = cidade
-        self.logradouro = logradouro
+        self.bairro = bairro
         self.rua = rua
-        self.numero = numero  
+        self.numero = numero 
         
     def salvar_endereco(self):
         session.add(self)

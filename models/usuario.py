@@ -1,9 +1,7 @@
 from database import Base, engine, session
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash
-from models.usuario_atributos.contato import ContatoUsuarioModel
-from models.usuario_atributos.cep import CepUsuarioModel
 
 
 class UsuarioModel(Base):
@@ -16,20 +14,18 @@ class UsuarioModel(Base):
     email = Column(String(40))
     senha = Column(String(200))
     CPF = Column(String(13))
-    contato_usuario_id = Column(Integer, ForeignKey(ContatoUsuarioModel.contato_usuario_id))
-    endereco_usuario_id = Column(Integer, ForeignKey(CepUsuarioModel.endereco_usuario_id))
+    contatos = relationship('ContatoUsuarioModel', backref="usuarios")
+    enderecos = relationship('CepUsuarioModel', backref="usuarios")
     compras = relationship('VendaModel', backref="usuarios")
     
 
-    def __init__(self, img_perfil_usuario, nome, sobrenome, email, senha, CPF, contato_usuario_id, endereco_usuario_id):
+    def __init__(self, img_perfil_usuario, nome, sobrenome, email, senha, CPF):
         self.img_perfil_usuario = img_perfil_usuario
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
         self.senha = senha
         self.CPF = CPF
-        self.contato_usuario_id = contato_usuario_id
-        self.endereco_usuario_id = endereco_usuario_id
     
     def json(self):
         return {
@@ -39,8 +35,8 @@ class UsuarioModel(Base):
             'sobrenome': self.sobrenome,
             'email': self.email,
             'CPF': self.CPF,
-            'contato_usuario_id': self.contato_usuario_id,
-            'endereco_usuario_id': self.endereco_usuario_id,
+            'contatos': [contato.json() for contato in self.contatos],
+            'enderecos': [endereco.json() for endereco in self.enderecos],
             'compras': [compra.json() for compra in self.compras]
         }
         
@@ -81,16 +77,16 @@ class UsuarioModel(Base):
         session.add(self)
         session.commit()
 
-    def atualizar_usuario(self, nome, sobrenome, email, CPF, contato_usuario_id, endereco_usuario_id):
+    def atualizar_usuario(self, nome, sobrenome, email, CPF):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
         self.CPF = CPF
-        self.contato_usuario_id = contato_usuario_id
-        self.endereco_usuario_id = endereco_usuario_id
 
     def deletar_usuario(self):
         [compra.deletar_venda() for compra in self.compras]
+        [contato.deletar_contato() for contato in self.contatos]
+        [endereco.deletar_endereco() for endereco in self.enderecos]
         
         session.delete(self)
         session.commit()

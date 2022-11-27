@@ -6,21 +6,11 @@ class ContatoLojaModel(Base):
 
     contato_loja_id = Column(Integer, primary_key=True)
     celular = Column(String(40))
-    titular_celular = Column(String(40))
-    telefone_fixo = Column (String(100))
-    titular_telefone_fixo = Column(String(40))
-    instagram = Column(String(100))
-    facebook = Column(String(100))
-    linkedin = Column(String(100))
+    nome = Column(String(40))
 
-    def __init__(self, celular,titular_celular, telefone_fixo, titular_telefone_fixo, instagram, facebook, linkedin):
+    def __init__(self, celular,nome):
         self.celular = celular
-        self.titular_celular = titular_celular
-        self.telefone_fixo = telefone_fixo
-        self.titular_telefone_fixo = titular_telefone_fixo
-        self.instagram = instagram
-        self.facebook = facebook
-        self.linkedin = linkedin
+        self.nome = nome
         
         
     
@@ -28,12 +18,7 @@ class ContatoLojaModel(Base):
         return {
             'contato_loja_id': self.contato_loja_id,
             'celular': self.celular,
-            'titular_celular': self.titular_celular,
-            'telefone_fixo': self.telefone_fixo,
-            'titular_telefone_fixo': self.titular_telefone_fixo,
-            'instagram': self.instagram,
-            'facebook': self.facebook,
-            'linkedin': self.linkedin
+            'nome': self.nome
         }
 
     @classmethod
@@ -50,14 +35,9 @@ class ContatoLojaModel(Base):
             return contato
         return False
 
-    def atualizar_contato(self, celular,titular_celular, telefone_fixo, titular_telefone_fixo, instagram, facebook, linkedin):
+    def atualizar_contato(self, celular,nome):
         self.celular = celular
-        self.titular_celular = titular_celular
-        self.telefone_fixo = telefone_fixo
-        self.titular_telefone_fixo = titular_telefone_fixo
-        self.instagram = instagram
-        self.facebook = facebook
-        self.linkedin = linkedin
+        self.nome = nome
 
     def salvar_contato(self):
         session.add(self)

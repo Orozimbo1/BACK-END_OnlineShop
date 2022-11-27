@@ -13,8 +13,6 @@ argumentos.add_argument('nome_fantasia', type=str, required=True, help= " O camp
 argumentos.add_argument('email', type=str, required=True, help= "O campo 'e-mail' precisa ser preenchido")
 argumentos.add_argument('senha', type=str, required=True, help= "O campo 'senha' precisa ser preenchido]")
 argumentos.add_argument('CNPJ', type=str, required=True, help= " O campo 'Seção' precisa ser preenchido")
-argumentos.add_argument('contato_loja_id', type=int)
-argumentos.add_argument('endereco_loja_id', type=int)
 
 class Lojas(Resource):
 
@@ -33,11 +31,10 @@ class Loja(Resource):
 
     def put(self, loja_id):
         atributos = reqparse.RequestParser()
+        atributos.add_argument('img_perfil_loja', type=str)
         atributos.add_argument('nome_fantasia', type=str)
         atributos.add_argument('email', type=str)
         atributos.add_argument('CNPJ', type=str)
-        atributos.add_argument('contato_loja_id', type=int)
-        atributos.add_argument('endereco_loja_id', type=int)
         
         data = atributos.parse_args()
 

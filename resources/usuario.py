@@ -13,8 +13,6 @@ argumentos.add_argument('sobrenome', type=str, required=True, help="O campo 'sob
 argumentos.add_argument('email', type=str, required=True, help="O campo 'email' não pode ser deixado em branco.")
 argumentos.add_argument('senha', type=str, required=True, help="O campo 'senha' não pode ser deixado em branco.")
 argumentos.add_argument('CPF', type=str)
-argumentos.add_argument('contato_usuario_id', type=int)
-argumentos.add_argument('endereco_usuario_id', type=int)
 
 class Usuarios(Resource):
 
@@ -35,12 +33,11 @@ class Usuario(Resource):
     def put(self, usuario_id):
         
         atributos = reqparse.RequestParser()
+        atributos.add_argument('img_perfil_usuario', type=str)
         atributos.add_argument('nome', type=str)
         atributos.add_argument('sobrenome', type=str)
         atributos.add_argument('email', type=str)
         atributos.add_argument('CPF', type=str)
-        atributos.add_argument('contato_usuario_id', type=int)
-        atributos.add_argument('endereco_usuario_id', type=int)
         data = atributos.parse_args()
 
         usuario_encontrado = UsuarioModel.buscar_usuario(usuario_id)

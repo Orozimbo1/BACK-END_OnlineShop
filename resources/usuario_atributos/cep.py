@@ -2,10 +2,10 @@ from flask_restful import Resource, reqparse
 from models.usuario_atributos.cep import CepUsuarioModel
 
 argumentos = reqparse.RequestParser()
-argumentos.add_argument('local_endereco', type=str)
+argumentos.add_argument('ponto_referencia', type=str)
 argumentos.add_argument('CEP', type=str)
 argumentos.add_argument('cidade', type=str)
-argumentos.add_argument('logradouro', type=str)
+argumentos.add_argument('bairro', type=str)
 argumentos.add_argument('rua', type=str)
 argumentos.add_argument('numero', type=int)
 
