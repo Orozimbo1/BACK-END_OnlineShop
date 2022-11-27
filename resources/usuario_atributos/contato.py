@@ -1,9 +1,8 @@
 from flask_restful import Resource, reqparse
 from models.usuario_atributos.contato import ContatoUsuarioModel
 
-
-
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('usuario_id', type=int)
 argumentos.add_argument('celular', type=str)
 argumentos.add_argument('nome')
 

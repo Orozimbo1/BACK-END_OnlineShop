@@ -4,6 +4,7 @@ from models.loja_atributos.contato import ContatoLojaModel
 
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('loja_id', type=int)
 argumentos.add_argument('celular', type=str)
 argumentos.add_argument('nome')
 

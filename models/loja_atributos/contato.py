@@ -1,14 +1,17 @@
 from database import Base, engine, session
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
+from models.loja import LojaModel
 
 class ContatoLojaModel(Base):
     __tablename__ = 'contato_lojas'
 
     contato_loja_id = Column(Integer, primary_key=True)
+    loja_id = Column(Integer, ForeignKey(LojaModel.loja_id))
     celular = Column(String(40))
     nome = Column(String(40))
 
-    def __init__(self, celular,nome):
+    def __init__(self, loja_id, celular, nome):
+        self.loja_id = loja_id
         self.celular = celular
         self.nome = nome
         
@@ -17,6 +20,7 @@ class ContatoLojaModel(Base):
     def json(self):
         return {
             'contato_loja_id': self.contato_loja_id,
+            'loja_id': self.loja_id,
             'celular': self.celular,
             'nome': self.nome
         }
@@ -35,7 +39,8 @@ class ContatoLojaModel(Base):
             return contato
         return False
 
-    def atualizar_contato(self, celular,nome):
+    def atualizar_contato(self, loja_id, celular,nome):
+        self.loja_id = loja_id
         self.celular = celular
         self.nome = nome
 

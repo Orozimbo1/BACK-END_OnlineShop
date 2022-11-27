@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse
 from models.usuario_atributos.cep import CepUsuarioModel
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('usuario_id', type=int)
 argumentos.add_argument('ponto_referencia', type=str)
 argumentos.add_argument('CEP', type=str)
 argumentos.add_argument('cidade', type=str)

@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse
 from models.loja_atributos.cep import CepLojaModel
 
 argumentos = reqparse.RequestParser()
+argumentos.add_argument('loja_id', type=int)
 argumentos.add_argument('CEP', type=str)
 argumentos.add_argument('UF', type=str)
 argumentos.add_argument('cidade', type=str)
