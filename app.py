@@ -23,18 +23,18 @@ from resources.loja_atributos.contato import ContatoLojas, ContatoLoja, ContatoL
 from resources.usuario_atributos.cep import CepUsuarios, CepUsuario, CepUsuarioCadastro
 from resources.usuario_atributos.contato import ContatoUsuarios, ContatoUsuario, ContatoUsuarioCadastro
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 
-CORS(application,supports_credentials=True)
+CORS(app,supports_credentials=True)
 
 dotenv.load_dotenv(dotenv.find_dotenv())
-application.config['SQLALCHEMY_DATABASE_URI'] = engine
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-application.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
-application.config['JWT_BLACKLIST_ENABLE'] = True
-api = Api(application)
-jwt = JWTManager(application)
+app.config['SQLALCHEMY_DATABASE_URI'] = engine
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['JWT_BLACKLIST_ENABLE'] = True
+api = Api(app)
+jwt = JWTManager(app)
 
 @cross_origin(origin='*')
 def sucess():
