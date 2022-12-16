@@ -6,7 +6,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
-from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro, UsuarioLogout
+from resources.usuario import Usuario, UsuarioLogin, Usuarios, UsuarioCadastro
 from resources.venda_prod import VendaProdCadastro, VendasProd, VendaProd
 from resources.venda import VendaCadastro, Vendas, Venda
 from resources.venda_atributos.frete import Fretes, Frete, FreteCadastro
@@ -17,7 +17,7 @@ from resources.produto_atributos.genero import Generos, Genero, GeneroCadastro
 from resources.produto_atributos.imagens_produto import ImagensProdutos, ImagemProduto, ImagemProdutoCadastro
 from resources.produto_atributos.secao import Secoes, Secao, SecaoCadastro
 from resources.produto import Produtos, Produto, ProdutoCadastro, ProdutoFiltro
-from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro, LojaLogout
+from resources.loja import LojaLogin, Lojas, Loja, LojaCadastro
 from resources.loja_atributos.cep import CepLojas, CepLoja, CepLojaCadastro
 from resources.loja_atributos.contato import ContatoLojas, ContatoLoja, ContatoLojaCadastro
 from resources.usuario_atributos.cep import CepUsuarios, CepUsuario, CepUsuarioCadastro
@@ -35,9 +35,9 @@ app.config['JWT_BLACKLIST_ENABLE'] = True
 api = Api(app)
 jwt = JWTManager(app)
 
-@jwt.token_in_blocklist_loader
-def verifica_blacklist(self, token):
-    return token['jti'] in BLACKLIST
+# @jwt.token_in_blocklist_loader
+# def verifica_blacklist(self, token):
+#     return token['jti'] in BLACKLIST
 
 @jwt.revoked_token_loader
 def token_de_acesso_invalidado(jwt_header, jwt_payload):
@@ -53,7 +53,7 @@ api.add_resource(Usuarios, '/usuarios')
 api.add_resource(Usuario, '/usuario/<int:usuario_id>')
 api.add_resource(UsuarioCadastro, '/usuario/cadastro')
 api.add_resource(UsuarioLogin, '/login')
-api.add_resource(UsuarioLogout, '/logout')
+# api.add_resource(UsuarioLogout, '/logout')
 api.add_resource(CepUsuarios, '/usuarios-enderecos')
 api.add_resource(CepUsuario, '/usuario-endereco/<int:endereco_usuario_id>')
 api.add_resource(CepUsuarioCadastro, '/usuario-endereco/cadastro')
@@ -68,7 +68,7 @@ api.add_resource(Lojas, '/lojas')
 api.add_resource(Loja, '/loja/<int:loja_id>')
 api.add_resource(LojaCadastro, '/loja/cadastro')
 api.add_resource(LojaLogin, '/loja/login')
-api.add_resource(LojaLogout, '/loja/logout')
+# api.add_resource(LojaLogout, '/loja/logout')
 api.add_resource(CepLojas, '/lojas-enderecos')
 api.add_resource(CepLoja, '/loja-endereco/<int:endereco_loja_id>')
 api.add_resource(CepLojaCadastro, '/loja-endereco/cadastro')

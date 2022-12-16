@@ -1,6 +1,6 @@
 from datetime import  timedelta
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt
+from flask_jwt_extended import create_access_token, jwt_required
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 from blacklist import BLACKLIST
 from models.usuario import UsuarioModel
@@ -101,10 +101,10 @@ class UsuarioLogin(Resource):
             return (token_de_acesso, usuario.json()), 200
         return {'mensagem': 'Usuário ou senha incorreto.'}, 401
 
-class UsuarioLogout(Resource):
+# class UsuarioLogout(Resource):
     
     # @jwt_required()
-    def post(self):
-        jwt_id = get_jwt()['jti']
-        BLACKLIST.add(jwt_id)
-        return {'message': 'Logout com sucesso.'}, 200
+    # def post(self):
+    #     jwt_id = get_jwt()['jti']
+    #     BLACKLIST.add(jwt_id)
+    #     return {'message': 'Logout com sucesso.'}, 200

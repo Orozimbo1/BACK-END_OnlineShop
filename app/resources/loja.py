@@ -2,7 +2,7 @@ from datetime import  timedelta
 from flask_restful import Resource, reqparse
 from models.loja import LojaModel
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt
+from flask_jwt_extended import create_access_token, jwt_required
 from blacklist import BLACKLIST
 
 
@@ -97,10 +97,10 @@ class LojaLogin(Resource):
             return  (token_de_acesso, loja.json()), 200
         return {'mensagem': 'Credenciais incorretas.'}, 401
 
-class LojaLogout(Resource):
+# class LojaLogout(Resource):
     
-    @jwt_required()
-    def post(self):
-        jwt_id = get_jwt()['jti']
-        BLACKLIST.add(jwt_id)
-        return {'message': 'Logout com sucesso.'}, 200
+    # @jwt_required()
+    # def post(self):
+    #     jwt_id = get_jwt()['jti']
+    #     BLACKLIST.add(jwt_id)
+    #     return {'message': 'Logout com sucesso.'}, 200
