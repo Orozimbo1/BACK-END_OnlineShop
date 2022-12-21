@@ -1,3 +1,3 @@
-CREATE DATABASE if not exists flaskdocker;
+CREATE DATABASE if not exists teste;
 
-USE flaskdocker;
+USE teste;
