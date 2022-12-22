@@ -45,7 +45,7 @@ def token_de_acesso_invalidado(jwt_header, jwt_payload):
 
 @app.route('/')
 def hello():
-    return '<h1>Bem vindo à OnlineShop Marketplace</h1>'
+    return '<h1>Bem vindo à OnlineShop Marketplace!</h1>'
 
 # ROTAS DOS USUARIOS
 

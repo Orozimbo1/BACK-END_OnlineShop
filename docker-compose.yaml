@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  db:
+    build: ./db/
+    restart: always
+    env_file:
+      - ./config/db.env
+    ports: 
+      - "5432:5432"
+    networks:
+      - onlineshop
+  
+  backend:
+    depends_on:
+      - db
+    build: ./app/
+    ports:
+      - "5000:5000"
+    restart: always
+    volumes:
+      - "C:\\Users\\Matheus\\Documents\\GitHub\\BACK-END_OnlineShop\\app:/app"
+    networks:
+      - onlineshop
+
+networks:
+  onlineshop:
