@@ -32,7 +32,7 @@ jobs:
 
       # push image to registry
       - name: Push Docker image
-        run: docker push back-end_onlineshop-backend back-end_onlineshop-db
+        run: docker push back-end_onlineshop-backend
 
       # deploy image
       - name: Deploy Docker image
