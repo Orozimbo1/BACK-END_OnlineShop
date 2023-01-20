@@ -28,12 +28,18 @@ jobs:
 
       # build image
       - name: Build Docker image
-        run: docker-compose build
+        run: docker build -t $IMAGE_NAME1 ./app
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME2 ./db
 
       # push image to registry
       - name: Push Docker image
-        run: docker push back-end_onlineshop-backend:latest back-end_onlineshop-db:latest
+        run: docker push $IMAGE_NAME1
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME2
 
       # deploy image
       - name: Deploy Docker image
-        run: gcloud run deploy site --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 80 --allow-unauthenticated
+        run: gcloud run deploy site --image $IMAGE_NAME1 --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 80 --allow-unauthenticated
+      - name: Deploy Docker image
+        run: gcloud run deploy site --image $IMAGE_NAME2 --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 80 --allow-unauthenticated
