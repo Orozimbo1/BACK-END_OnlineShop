@@ -115,4 +115,4 @@ api.add_resource(Secao, '/secao/<int:secao_produto_id>')
 api.add_resource(SecaoCadastro, '/secao/cadastro')
 
 if __name__ == "__main__":
-    app.run(debug=True, port="5000")
+    app.run(debug=True, port=os.getenv("PORTA"))
