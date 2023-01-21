@@ -113,3 +113,6 @@ api.add_resource(ImagemProdutoCadastro, '/imagem-do-produto/cadastro')
 api.add_resource(Secoes, '/secoes')
 api.add_resource(Secao, '/secao/<int:secao_produto_id>')
 api.add_resource(SecaoCadastro, '/secao/cadastro')
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True, port="5000")
