@@ -25,6 +25,18 @@ jobs:
       # gcloud configure docker
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
+        
+      # build image db
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME ./db
+
+      # push image to registry
+      - name: Push Docker image db
+        run: docker push $IMAGE_NAME
+
+      # deploy image db
+      - name: Deploy Docker image
+        run: gcloud run deploy site --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 5432 -e PORTA=5432 --allow-unauthenticated
 
       # build image app
       - name: Build Docker image
@@ -37,15 +49,3 @@ jobs:
       # deploy image app
       - name: Deploy Docker image
         run: gcloud run deploy site --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed PORT=5000 --allow-unauthenticated
-        
-        # build image db
-      - name: Build Docker image
-        run: docker build -t $IMAGE_NAME ./app
-
-      # push image to registry
-      - name: Push Docker image db
-        run: docker push $IMAGE_NAME
-
-      # deploy image db
-      - name: Deploy Docker image
-        run: gcloud run deploy site --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 5432:5432 -e PORTA=5432 --allow-unauthenticated
