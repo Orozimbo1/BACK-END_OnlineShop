@@ -1,4 +1,5 @@
 **venv
 **__pycache__
 **cred.json
+**strings.txt
 /**.env
